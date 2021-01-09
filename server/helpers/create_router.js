@@ -2,14 +2,15 @@ const express = require('express');
 const User = require('../models/user/user');
 
 const createRouter = collection => {
-    router = express.Router();
-
+    const router = express.Router();
+    
     // get everything
     router.get('/', (req, res) => {
         collection.find().toArray()
             .then(result => {
                 res.json(result);
             })
+            .catch(console.error);
     });
 
     // create user router
@@ -28,7 +29,7 @@ const createRouter = collection => {
                             res.json(resCreatedPlayer.ops[0]); // send the player to the front end
                         })
                         .catch(console.error);
-                // send player to front end
+                    // send player to front end
                 } else { // when the user exists in the db
                     // send player to front end
                     res.json(result);
@@ -38,8 +39,16 @@ const createRouter = collection => {
 
     });
 
-
     // UPDATE: for incrementing user score
+    router.patch('/:name', (req, res) => {
+        const userName = req.params.name;
+        const updatedUserObj = req.body;
+        collection.updateOne({ userName: userName }, { $set: updatedUserObj })
+            .then(result => {
+                res.json(result);
+            })
+            .catch(console.error);
+    });
 
     return router;
 };
