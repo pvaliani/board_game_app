@@ -1,9 +1,9 @@
 import './CheckerBoard.css';
-
+import Grid from '../Grid/Grid'
 const CheckerBoard = () => {
 
     return (
-        <h1>I am the CheckerBoard</h1>
+        <Grid />
     );
 };
 
