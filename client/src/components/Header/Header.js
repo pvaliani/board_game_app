@@ -5,10 +5,11 @@ import ResetBox from '../ResetBox/ResetBox';
 
 
 
-const Header = () => {
+const Header = ({ onSetUsers }) => {
+
     return (
         <div>
-            <UserForm />
+            <UserForm  onSetUsers={onSetUsers}/>
             <Title />
             <ResetBox />
         </div>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { verifyUser } from '../../services/user-services';
 
 
-const UserForm = () => {
+const UserForm = ({ onSetUsers }) => {
     const [user1, setUser1] = useState('');
     const [user2, setUser2] = useState('');
 
@@ -38,11 +38,23 @@ const UserForm = () => {
             // (not sending data to back-end)
             return
         }
-        // PAUSE HERE
         if (buttonTitle === 'user1') {
-            // verifyUser(user1, backendUser => setUser1(backendUser));
-        } else {
-
+            // this will be run when the first "submit button" is pressed
+            verifyUser(user1) 
+                .then(backEndUser => onSetUsers(prevState => {
+                    // Appending the current user (user1) to the previous
+                    // state (not overwitting the existing state)
+                    return { ...prevState, user1: backEndUser }
+                }))
+                .catch(console.error);
+        } else { // is for user2
+            verifyUser(user2)
+                .then(backEndUser => onSetUsers(prevState => {
+                    // Appending the current user (user2) to the previous
+                    // state (not overwitting the existing state)
+                    return { ...prevState, user2: backEndUser }
+                }))
+                .catch(console.error);
         }
     };
 
