@@ -1,8 +1,10 @@
 import './App.css';
+import GameBox from './containers/GameBox/GameBox';
+
 
 function App() {
   return (
-    <div>board game</div>
+    <GameBox />
   );
 }
 
