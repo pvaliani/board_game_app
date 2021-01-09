@@ -8,10 +8,8 @@ const insertUser = (user, collection) => {
     return collection.insertOne(user)
      .then(res => res)
      .catch(err => err);
+
 };
-
-
-
 
 module.exports = {
     insertUser

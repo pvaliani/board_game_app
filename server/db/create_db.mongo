@@ -1,2 +1,0 @@
-use board_game;
-db.dropDatabase();

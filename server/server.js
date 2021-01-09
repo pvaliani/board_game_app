@@ -13,8 +13,8 @@ MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true })
     .then(client => {
         const db = client.db('board_game');
         const usersCollection = db.collection('users');
-        const usersRoure = createRouter(usersCollection);
-        app.use('/api/users', usersRoure);
+        const usersRoute = createRouter(usersCollection);
+        app.use('/api/users', usersRoute);
     })
     .catch(console.error);
 

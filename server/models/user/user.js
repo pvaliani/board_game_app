@@ -1,7 +1,7 @@
-const User = function(name, id, score = 0) {
-    this.name = name;
-    this.id = id;
-    this.score = score;
+const User = function(userName, wins = 0, losses = 0) {
+    this.userName = userName;
+    this.wins = wins;
+    this.losses = losses;
 };
 
 

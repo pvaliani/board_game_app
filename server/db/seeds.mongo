@@ -1,0 +1,25 @@
+use board_game; 
+db.dropDatabase();
+
+db.users.insertMany([  
+  {
+    userName: 'Ped',
+    wins: 0,
+    losses: 0,
+  },
+  {
+    userName: 'Osh',
+    wins: 0,
+    losses: 0
+  },
+  {
+    userName: 'Nargis',
+    wins: 0,
+    losses: 0
+  },
+  {
+    userName: 'Nikos',
+    wins: 0,
+    losses: 0
+  }
+]);
