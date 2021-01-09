@@ -12,10 +12,8 @@ const createRouter = collection => {
             })
     });
 
-
     // create user router
     router.post('/verify-user', (req, res) => {
-
         const playerObj = req.body; // {name: Pedram}
         // checking if player exists
         collection.findOne(playerObj)
@@ -39,6 +37,10 @@ const createRouter = collection => {
             .catch(console.error);
 
     });
+
+
+    // UPDATE: for incrementing user score
+
     return router;
 };
 

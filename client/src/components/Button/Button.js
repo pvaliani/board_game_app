@@ -1,9 +1,9 @@
 import './Button.css';
 
-const Button = ({ title }) => {
+const Button = ({ title, onSubmit }) => {
 
     return (
-        <button>{title}</button>
+        <button onClick={onSubmit}>{title}</button>
     );
 };
 
