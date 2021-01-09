@@ -1,16 +1,25 @@
 .grid {
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 600px;
 }
 
 .row {
-    height: 40px;
+    height: 60px;
 }
 
 .square {
-    height: 40px;
+    height: 60px;
     display: inline-block;
-    width: 40px;
+    width: 60px;
     background-color: red;
     border: 2px solid black;
+    color: red;
+}
+
+.black {
+    background-color: black;
+}
+
+.white {
+    background-color: white;
 }
