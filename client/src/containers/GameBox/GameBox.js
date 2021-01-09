@@ -4,7 +4,9 @@ const GameBox = () => {
 
     return (
         <main className="main-container">
-           
+            <Header />
+            {/* <MainGame />
+            <ScoreBoard /> */}
         </main>
     );
 };
