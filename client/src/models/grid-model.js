@@ -4,7 +4,7 @@ class GridClass {
     constructor(rows, columns) {
         this.columns = columns;
         this.rows = rows;
-        this.initialState = null;
+        this.state = null;
     }
 
 
@@ -19,7 +19,7 @@ class GridClass {
                 }
             });
         });
-        this.initialState = grid;
+        this.state = grid;
     }
 
     _hasPiece (location) {
