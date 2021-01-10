@@ -1,24 +1,30 @@
 import './Grid.css';
 import { squareColor } from '../../utils/squareColor';
-
-const rows = [...Array(8).keys()]; // [0, 1...7]
-const columns = [...Array(8).keys()]; // [0, 1...7]
-
+import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs/grid-specs';
 const Grid = () => {
 
     const gridJSX = rows.map(row => {
+        /* 
+            This function creates the grid. The grid is a 
+            columns.length x rows.length array of jsx divisions.
+            To create this grid, we use 2 nested map loops. 
+            The inner loop is responsible for the columns (individual squares).
+            The outter loop is responsible for the rows.
+            For the appearence (e.g., color) of the grid we use CSS.
+        */
         return (
-            <div className="row">
+            <div className="row-grid" style={rowStyle}>
                 {columns.map(column => {
+                    // appearence logic goes here (square color / pieces color etc)
                     const sqColorClass = squareColor(column, row);
-                    return <div className={`square ${sqColorClass}`}>{row}, {column}</div>;
+                    return <div className={`square-grid ${sqColorClass}`} style={squareStyle}>{row}, {column}</div>;
                 })}
             </div>)
     });
 
 
     return (
-        <div className="grid">
+        <div className="grid" style={gridStyle}>
             {gridJSX}
         </div>
     );

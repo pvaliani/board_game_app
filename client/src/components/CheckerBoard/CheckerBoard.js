@@ -3,7 +3,9 @@ import Grid from '../Grid/Grid'
 const CheckerBoard = () => {
 
     return (
-        <Grid />
+        <section className="checker-board-section">
+            <Grid />
+        </section>
     );
 };
 

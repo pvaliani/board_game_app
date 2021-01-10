@@ -8,11 +8,11 @@ import ResetBox from '../ResetBox/ResetBox';
 const Header = ({ onSetUsers }) => {
 
     return (
-        <div>
+        <section className="header-section">
             <UserForm  onSetUsers={onSetUsers}/>
             <Title />
             <ResetBox />
-        </div>
+        </section>
     );
 };
 

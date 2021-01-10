@@ -4,5 +4,4 @@ const User = function(userName, wins = 0, losses = 0) {
     this.losses = losses;
 };
 
-
 module.exports = User;

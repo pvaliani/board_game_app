@@ -4,7 +4,9 @@ import './ResetBox.css';
 const ResetBox = () => {
 
     return (
-        <Button title="Reset"/>
+        <div className="reset-box">
+            <Button title="Reset"/>
+        </div>
     );
 };
 

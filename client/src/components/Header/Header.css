@@ -1,0 +1,6 @@
+.header-section {
+    grid-area: header;
+    display: grid;
+    grid-template-areas: "user-form game-title reset-box";
+    grid-template-columns: repeat(3, 1fr);
+}
