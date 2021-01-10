@@ -4,25 +4,26 @@ class GridClass {
     constructor(rows, columns) {
         this.columns = columns;
         this.rows = rows;
-        this.state = null;
+        this.gridState = null;
     }
 
 
-    initialiseState () {
+    initialiseState() {
         const grid = this.rows.map(row => {
             return this.columns.map(column => {
                 // decide if that square (i.e., combination column, row) has a piece
                 if (this._hasPiece({ column, row })) {
                     return new Piece({ column, row });
                 } else {
-                    return null; // don't return a piece
+                    return { location: { column, row }, hasPiece: false };
                 }
             });
         });
-        this.state = grid;
+        this.gridState = grid;
+        this.setLegalMoves();
     }
 
-    _hasPiece (location) {
+    _hasPiece(location) {
         if ((location.column % 2 !== 0) && (location.row % 2 === 0) && (location.row < 3 || location.row > 4)) {
             return true;
         }
@@ -30,6 +31,16 @@ class GridClass {
             return true;
         }
         return false;
+    }
+
+    setLegalMoves() {
+        for (const row of this.gridState) {
+            for (const square of row) {
+                if (square.hasPiece) {
+                    square.setPieceLegalMoves(this.gridState);
+                }
+            }
+        }
     }
 };
 

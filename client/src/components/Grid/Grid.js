@@ -13,15 +13,15 @@ const Grid = () => {
         gridInstance = new GridClass(columns, rows);
         gridInstance.initialiseState();
         setCurrentPlayer('user1'); // triggers another cycle
-        console.table(gridInstance.state);
+        console.table(gridInstance.gridState);
     }, []);
+
 
     const selectPieceHandler = piece => {
         if (piece === selectedPiece) {
             return setSelectedPiece('');
         }
         setSelectedPiece(piece);
-        console.log('piece selected', 'Grid.js', 'line: ', '21');
     };
 
     const gridJSX = columns.map(column => {
@@ -42,9 +42,10 @@ const Grid = () => {
                     // when gridInstance is defined, then we get back a square from 
                     // the state of the grid. This square, can either hold a piece
                     // or be null.
-                    const piece = gridInstance && gridInstance.state[column][row];
+                    const square = gridInstance && gridInstance.gridState[column][row];
                     let pieceJSX;
-                    if (piece) { // if the piece if defined 
+                    if (square && typeof(square.hasPiece) === 'undefined') { // if the piece if defined 
+                        const piece = square;
                         // if piece is defined then give me back the userTitle of that piece and compare it to the current player
                         if(piece.userTitle === currentPlayer) {
                             let pieceClasses = 'piece ';

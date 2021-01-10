@@ -19,6 +19,24 @@ class Piece {
         }
     }
 
+    setPieceLegalMoves(grid) {
+        const neighbourSquares = this.getNeighbourSquares(grid);
+
+    }
+
+    getNeighbourSquares(grid) {
+        return [
+            grid[this.location.row -1] && grid[this.location.row - 1][this.location.column - 1],
+            grid[this.location.row + 1] && grid[this.location.row + 1][this.location.column + 1],
+            grid[this.location.row + 1] && grid[this.location.row + 1][this.location.column - 1],
+            grid[this.location.row - 1] && grid[this.location.row - 1][this.location.column + 1]
+        ];
+    }
+
+    
+
+
+
 }
 
 
