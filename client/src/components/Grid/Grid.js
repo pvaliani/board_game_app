@@ -31,7 +31,6 @@ const Grid = () => {
                     const sqColorClass = squareColor(column, row);
                     // double bank '!!' operator transforms the value on its right to boolean
                     const hasPiece = gridInstance && !!gridInstance.state[column][row];
-                    console.log(hasPiece, 'Grid.js', 'line: ', '31');
                     return (
                         <div key={row} className={`square-grid ${sqColorClass}`} style={squareStyle}>
                             {hasPiece && <div className="piece"> </div> }
