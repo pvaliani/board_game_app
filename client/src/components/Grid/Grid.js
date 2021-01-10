@@ -27,7 +27,7 @@ const Grid = () => {
                     // appearence logic goes here (square color / pieces color etc)
                     const sqColorClass = squareColor(column, row);
                     return (
-                        <div className={`square-grid ${sqColorClass}`} style={squareStyle}>{row}, {column}</div>
+                        <div className={`square-grid ${sqColorClass}`} style={squareStyle}>{column}, {row}</div>
                     );
                 })}
             </div>)
