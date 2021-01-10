@@ -6,7 +6,6 @@ import { useState } from 'react';
 
 const GameBox = () => {
     const [users, setUsers] = useState({});
-    console.log(users, 'GameBox.js', 'line: ', '9');
 
     return (
         <main className="main-container">

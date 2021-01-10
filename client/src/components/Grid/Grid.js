@@ -1,7 +1,16 @@
 import './Grid.css';
 import { squareColor } from '../../utils/squareColor';
 import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs/grid-specs';
+import GridClass from '../../models/grid-model';
+import { useEffect } from 'react';
+
+let gridInstance;
 const Grid = () => {
+
+    useEffect(() => {
+        gridInstance = new GridClass(columns, rows);
+        gridInstance.initialiseState();
+    }, [])
 
     const gridJSX = rows.map(row => {
         /* 
@@ -17,7 +26,9 @@ const Grid = () => {
                 {columns.map(column => {
                     // appearence logic goes here (square color / pieces color etc)
                     const sqColorClass = squareColor(column, row);
-                    return <div className={`square-grid ${sqColorClass}`} style={squareStyle}>{row}, {column}</div>;
+                    return (
+                        <div className={`square-grid ${sqColorClass}`} style={squareStyle}>{row}, {column}</div>
+                    );
                 })}
             </div>)
     });

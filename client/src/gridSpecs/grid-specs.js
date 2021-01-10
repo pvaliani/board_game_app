@@ -10,7 +10,7 @@ export const squareStyle = {
 };
 
 export const rowStyle = {
-    heihgt: sqHeight,
+    height: sqHeight,
     width: sqWidth * columns.length
 };
 

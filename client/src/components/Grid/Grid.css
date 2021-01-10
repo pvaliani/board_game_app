@@ -22,3 +22,10 @@
 .whiteSquare {
     background-color: white;
 }
+
+.piece {
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 50%;
+}
