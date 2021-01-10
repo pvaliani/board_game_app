@@ -1,4 +1,4 @@
-import Piece from './piece-model';
+import Square from './square-model';
 
 class GridClass {
     constructor(rows, columns) {
@@ -13,9 +13,9 @@ class GridClass {
             return this.columns.map(column => {
                 // decide if that square (i.e., combination column, row) has a piece
                 if (this._hasPiece({ column, row })) {
-                    return new Piece({ column, row });
+                    return new Square({ column, row }, true);
                 } else {
-                    return { location: { column, row }, hasPiece: false };
+                    return new Square({ column, row }, false);
                 }
             });
         });
@@ -36,7 +36,7 @@ class GridClass {
     setLegalMoves() {
         for (const row of this.gridState) {
             for (const square of row) {
-                if (square.hasPiece) {
+                if (square.piece) {
                     square.setPieceLegalMoves(this.gridState);
                 }
             }

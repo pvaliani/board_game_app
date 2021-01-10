@@ -3,6 +3,7 @@ import { squareColor } from '../../utils/squareColor';
 import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs/grid-specs';
 import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
+import { pieceAsJSX } from '../../utils/pieceAsJSX';
 
 let gridInstance;
 const Grid = () => {
@@ -43,21 +44,9 @@ const Grid = () => {
                     // the state of the grid. This square, can either hold a piece
                     // or be null.
                     const square = gridInstance && gridInstance.gridState[column][row];
-                    let pieceJSX;
-                    if (square && typeof(square.hasPiece) === 'undefined') { // if the piece if defined 
-                        const piece = square;
-                        // if piece is defined then give me back the userTitle of that piece and compare it to the current player
-                        if(piece.userTitle === currentPlayer) {
-                            let pieceClasses = 'piece ';
-                            if (piece === selectedPiece) {
-                                pieceClasses += 'selected-piece ';
-                            }
-                            pieceJSX = <div className={pieceClasses} onClick={() => selectPieceHandler(piece)} > </div>; 
-                        } else {
-                            pieceJSX = <div className="piece"> </div>; 
-                        }
-                    }
-                    
+                    // the following function contains all the logic related to the 
+                    // JSX piece component (whether there is a piece, if it is selected and so on)
+                    const pieceJSX = pieceAsJSX(square, currentPlayer, selectedPiece, selectPieceHandler);
                     return (
                         <div key={row} className={`square-grid ${sqColorClass}`} style={squareStyle}>
                             {pieceJSX}

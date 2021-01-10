@@ -1,11 +1,12 @@
-class Piece {
-    constructor(location) {
+class Square {
+    constructor(location, hasPiece) {
         this.location = location; // object of coordinates
-        this.userTitle = this.whichUser(); // 'user1' or 'user2'
-        this.isTaken = false;
+        this.piece = hasPiece && {
+            userTitle: this.pieceBelongsToUser() // 'user1' or 'user2'
+        };
     }
 
-    whichUser () {
+    pieceBelongsToUser () {
         /*
             This function decides to whom this 
             piece belongs to. If the current row
@@ -21,7 +22,7 @@ class Piece {
 
     setPieceLegalMoves(grid) {
         const neighbourSquares = this.getNeighbourSquares(grid);
-
+        console.log(neighbourSquares, 'square-model.js', 'line: ', '25');
     }
 
     getNeighbourSquares(grid) {
@@ -33,11 +34,11 @@ class Piece {
         ];
     }
 
-    
+
 
 
 
 }
 
 
-export default Piece;
+export default Square;
