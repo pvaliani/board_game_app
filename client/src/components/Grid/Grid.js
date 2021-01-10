@@ -10,6 +10,7 @@ const Grid = () => {
     useEffect(() => {
         gridInstance = new GridClass(columns, rows);
         gridInstance.initialiseState();
+        console.table(gridInstance.initialState);
     }, [])
 
     const gridJSX = rows.map(row => {
@@ -22,12 +23,12 @@ const Grid = () => {
             For the appearence (e.g., color) of the grid we use CSS.
         */
         return (
-            <div className="row-grid" style={rowStyle}>
+            <div key={row} className="row-grid" style={rowStyle}>
                 {columns.map(column => {
                     // appearence logic goes here (square color / pieces color etc)
                     const sqColorClass = squareColor(column, row);
                     return (
-                        <div className={`square-grid ${sqColorClass}`} style={squareStyle}>{column}, {row}</div>
+                        <div key={column} className={`square-grid ${sqColorClass}`} style={squareStyle}>{column}, {row}</div>
                     );
                 })}
             </div>)

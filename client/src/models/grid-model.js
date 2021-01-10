@@ -1,12 +1,14 @@
 import Piece from './piece-model';
 
-const GridClass = function (columns, rows) {
-    this.columns = columns;
-    this.rows = rows;
-    this.initialState = null;
+class GridClass {
+    constructor(rows, columns) {
+        this.columns = columns;
+        this.rows = rows;
+        this.initialState = null;
+    }
 
 
-    this.initialiseState = function () {
+    initialiseState () {
         const grid = this.rows.map(row => {
             return this.columns.map(column => {
                 // decide if that square (i.e., combination column, row) has a piece
@@ -20,7 +22,7 @@ const GridClass = function (columns, rows) {
         this.initialState = grid;
     }
 
-    this._hasPiece = function (location) {
+    _hasPiece (location) {
         if ((location.column % 2 !== 0) && (location.row % 2 === 0) && (location.row < 3 || location.row > 4)) {
             return true;
         }
