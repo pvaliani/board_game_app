@@ -40,5 +40,6 @@
 }
 
 .legal-square {
-    outline: 5px solid greenyellow;
+    outline: 3px solid greenyellow;
+    z-index: 1;
 }

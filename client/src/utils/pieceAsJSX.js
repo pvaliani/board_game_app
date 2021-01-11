@@ -19,7 +19,6 @@ export const pieceAsJSX = (square, currentPlayer, selectedPiece, selectPieceHand
         // in that point, we know that the current piece belongs to 
         // the active player. So we also want to get access to this 
         // piece's legal moves (if any).
-        console.log(piece.legalMoves, 'pieceAsJSX.js', 'line: ', '22');
         if (piece.userTitle === currentPlayer && piece.legalMoves.length) {
             const pieceClasses = isPieceSelectedClasses(piece, selectedPiece);
             pieceJSX = <div className={pieceClasses} onClick={() => selectPieceHandler(piece)} > </div>;

@@ -53,9 +53,10 @@ const Grid = () => {
                     // the following function contains all the logic related to the 
                     // JSX piece component (whether there is a piece, if it is selected and so on)
                     const pieceJSX = pieceAsJSX(square, currentPlayer, selectedPiece, selectPieceHandler);
-
-                    const squareClasses = `square-grid ${sqColorClass}`;
-
+                    let squareClasses = `square-grid ${sqColorClass}`;
+                    if (Object.keys(selectedPiece).length && selectedPiece.legalMoves.includes(square)) {
+                        squareClasses += 'legal-square ';
+                    }
 
                     return (
                         <div key={row} className={squareClasses} style={squareStyle}>
