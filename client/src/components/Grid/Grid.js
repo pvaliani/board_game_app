@@ -17,6 +17,9 @@ const Grid = () => {
         console.table(gridInstance.gridState);
     }, []);
 
+    const selectMoveHandler = () => {
+
+    };
 
     const selectPieceHandler = piece => {
         /* 
@@ -54,14 +57,24 @@ const Grid = () => {
                     // JSX piece component (whether there is a piece, if it is selected and so on)
                     const pieceJSX = pieceAsJSX(square, currentPlayer, selectedPiece, selectPieceHandler);
                     let squareClasses = `square-grid ${sqColorClass}`;
-                    if (Object.keys(selectedPiece).length && selectedPiece.legalMoves.includes(square)) {
-                        squareClasses += 'legal-square ';
-                    }
-
-                    return (
+                    let squareJSX = (
                         <div key={row} className={squareClasses} style={squareStyle}>
                             {pieceJSX}
                         </div>
+                    );
+                    if (Object.keys(selectedPiece).length && selectedPiece.legalMoves.includes(square)) {
+                        // if we are here, we know 1) a piece is selected and, 2) THIS square
+                        // is a legal move of the selected piece.
+                        squareClasses += 'legal-square ';
+                        squareJSX = (
+                            <div key={row} className={squareClasses} style={squareStyle} onClick={() => {selectMoveHandler}}>
+                                {pieceJSX}
+                            </div>
+                        );
+                    }
+
+                    return (
+                        squareJSX
                     );
                 })}
             </div>)
