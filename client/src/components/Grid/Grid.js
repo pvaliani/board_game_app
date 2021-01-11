@@ -19,6 +19,12 @@ const Grid = () => {
 
 
     const selectPieceHandler = piece => {
+        /* 
+            This function is being called each time a player
+            clicks on one of their pieces. If the clicked piece
+            is already selected (the following if statement)
+            then we de-select it, otherwise, we select it.
+        */
         if (piece === selectedPiece) {
             return setSelectedPiece('');
         }

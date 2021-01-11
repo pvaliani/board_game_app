@@ -26,6 +26,9 @@ class Square {
     }
 
     getNeighbourSquares(grid) {
+        /* 
+            This function gives back just the four possible neighbouring squares.
+        */
         return [
             grid[this.location.row -1] && grid[this.location.row - 1][this.location.column - 1],
             grid[this.location.row + 1] && grid[this.location.row + 1][this.location.column + 1],
