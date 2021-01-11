@@ -6,9 +6,14 @@ class Square {
         this.piece = hasPiece && {
             location: this.location,
             userTitle: this.pieceBelongsToUser(), // 'user1' or 'user2'
-            legalMoves: [],
-            basicLegalMoves: []
+            capturingLegalMoves: [],
+            basicLegalMoves: [],
+            legalMoves: []
         };
+    }
+
+    mergeLegalMoves() {
+        this.piece.legalMoves = [...this.piece.basicLegalMoves, ...this.piece.capturingLegalMoves];
     }
 
     pieceBelongsToUser() {
@@ -25,27 +30,27 @@ class Square {
         }
     }
 
-    setPieceLegalMoves(grid) {
+    setPieceCapturingLegalMoves(grid) {
         const neighbourSquares = this.getNeighbourSquares(grid);
         // checking if there is an opponent in current's square neighbours
         const opponents = neighbourSquares.filter(square => {
             return square.piece && square.piece.userTitle !== this.piece.userTitle
         });
-        console.log(this, 'square-model.js', 'line: ', '33');
-        console.log(opponents, 'square-model.js', 'line: ', '34');
-
+    
         const capturingMoves = [];
         opponents.forEach(opponentSq => {
-            const captureOptionArray = opponentSq.piece.basicLegalMoves.filter(legalMove => legalMove.location.column !== this.location.column && legalMove.location.row !== this.location.row);
+            const captureOptionArray = opponentSq.piece.basicLegalMoves.filter(legalMove => (legalMove.location.column !== this.location.column) && (legalMove.location.row !== this.location.row));
             if (captureOptionArray.length) {
                 capturingMoves.push(captureOptionArray[0]);
             }
-            console.log(captureOptionArray, 'square-model.js', 'line: ', '38');
         });
-        console.log(capturingMoves, 'square-model.js', 'line: ', '44');
+
+        this.piece.capturingLegalMoves = capturingMoves;
+    }
+
+    setPieceBasicLegalMoves(grid) {
+        const neighbourSquares = this.getNeighbourSquares(grid);
         const basicLegalMoves = neighbourSquares.filter(square => !square.piece);
-        const legalMoves = [...basicLegalMoves, ...capturingMoves];
-        this.piece.legalMoves = legalMoves;
         this.piece.basicLegalMoves = basicLegalMoves;
     }
 
