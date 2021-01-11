@@ -18,7 +18,7 @@ class GridClass {
         this.gridState[targetSqRow][targetSqColumn].piece.location = targetSquare.location;
 
         // removing selected piece from initial location
-        this.gridState[selectedPieceRow][selectedPieceColumn].piece = null;
+        this.gridState[selectedPieceRow][selectedPieceColumn].piece = false;
         this.callPieceLegalMoves();
     }
 
