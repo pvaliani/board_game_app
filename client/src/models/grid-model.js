@@ -13,7 +13,24 @@ class GridClass {
         const targetSqRow = targetSquare.location.row;
         const selectedPieceColumn = selectedPiece.location.column;
         const selectedPieceRow = selectedPiece.location.row;
+
+        // deciding if we did a capturing move
+        const tgLoc = targetSquare.location;
+        const slcPieceLoc = selectedPiece.location;
+        const wasCapturingMove = Math.abs(tgLoc.column - slcPieceLoc.column) === 2 && Math.abs(tgLoc.row - slcPieceLoc.row) === 2;
+        if (wasCapturingMove) {
+            // if we did a capturing move, remove opponent
+            // getting neighbours of target square
+            const targSqNeighbours = targetSquare.getNeighbourSquares(this.gridState);
+            const selectedPieceNeighbours = this.gridState[selectedPieceRow][selectedPieceColumn].getNeighbourSquares(this.gridState);
+            const opponentSq = targSqNeighbours.filter(tgNeigh => selectedPieceNeighbours.includes(tgNeigh))[0];
+            // remove that opponent
+            this.gridState[opponentSq.location.row][opponentSq.location.column].piece = false;
+
+        }
+
         this.gridState[targetSqRow][targetSqColumn].piece = { ...this.gridState[selectedPieceRow][selectedPieceColumn].piece };
+
         // altering selected (and now moved) piece location to the target square location
         this.gridState[targetSqRow][targetSqColumn].piece.location = targetSquare.location;
 
@@ -21,6 +38,10 @@ class GridClass {
         this.gridState[selectedPieceRow][selectedPieceColumn].piece = false;
         this.callPieceBasicLegalMoves();
         this.callPieceCapturingLegalMoves();
+    }
+
+    capturePiece() {
+
     }
 
     initialiseState() {
@@ -78,7 +99,7 @@ class GridClass {
         }
 
     }
-
+    // TODO: refactor this to one function
     callPieceCapturingLegalMoves() {
         /* 
             This function has just two for loops
