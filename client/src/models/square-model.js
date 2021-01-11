@@ -26,8 +26,7 @@ class Square {
     setPieceLegalMoves(grid) {
         const neighbourSquares = this.getNeighbourSquares(grid);
         const legalMoves = neighbourSquares.filter(square => !square.piece);
-        this.legalMoves = legalMoves;
-        debugger
+        this.piece.legalMoves = legalMoves;
     }
 
     getNeighbourSquares(grid) {
