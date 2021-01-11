@@ -38,3 +38,7 @@
     transform: translate(-50%, -60%);
     box-shadow: 0 10px 0 0 rgba(250, 0, 0, 0.5);
 }
+
+.legal-square {
+    outline: 5px solid greenyellow;
+}

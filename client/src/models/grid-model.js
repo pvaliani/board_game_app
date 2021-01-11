@@ -26,7 +26,7 @@ class GridClass {
         this.gridState = grid;
         // after we have initialised the grid, we set the legal moves
         // for each and every piece.
-        this.setLegalMoves();
+        this.callPieceLegalMoves();
     }
 
     _hasPieceInitialState(location) {
@@ -44,7 +44,7 @@ class GridClass {
         return false;
     }
 
-    setLegalMoves() {
+    callPieceLegalMoves() {
         /* 
             This function has just two for loops
             which sole purpose is to extract out

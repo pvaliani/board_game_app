@@ -3,15 +3,15 @@ export const squareColor = (col, row) => {
     let squareColor;
     
     if ((row % 2 === 0) && (col % 2 === 0) ) {
-        squareColor = 'whiteSquare';
+        squareColor = 'whiteSquare ';
     } else if ((row % 2 === 0) && (col % 2 !== 0) ) {
-        squareColor = 'blackSquare'
+        squareColor = 'blackSquare '
     }
 
     if ((row % 2 !== 0) && (col % 2 === 0) ) {
-        squareColor = 'blackSquare';
+        squareColor = 'blackSquare ';
     } else if ((row % 2 !== 0) && (col % 2 !== 0) ) {
-        squareColor = 'whiteSquare';
+        squareColor = 'whiteSquare ';
     }
 
 
