@@ -17,8 +17,14 @@ const Grid = () => {
         console.table(gridInstance.gridState);
     }, []);
 
-    const selectMoveHandler = () => {
-
+    const selectMoveHandler = targetSquare => {
+        gridInstance.movePiece(targetSquare, selectedPiece);
+        if (currentPlayer === 'user1') {
+            setCurrentPlayer('user2'); // triggers another cycle
+        } else {
+            setCurrentPlayer('user1'); // triggers another cycle
+        }
+        setSelectedPiece('');
     };
 
     const selectPieceHandler = piece => {
@@ -67,7 +73,7 @@ const Grid = () => {
                         // is a legal move of the selected piece.
                         squareClasses += 'legal-square ';
                         squareJSX = (
-                            <div key={row} className={squareClasses} style={squareStyle} onClick={() => {selectMoveHandler}}>
+                            <div key={row} className={squareClasses} style={squareStyle} onClick={() => selectMoveHandler(square)}>
                                 {pieceJSX}
                             </div>
                         );

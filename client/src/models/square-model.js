@@ -4,6 +4,7 @@ class Square {
     constructor(location, hasPiece) {
         this.location = location; // object of coordinates
         this.piece = hasPiece && {
+            location: this.location,
             userTitle: this.pieceBelongsToUser(), // 'user1' or 'user2'
             legalMoves: []
         };

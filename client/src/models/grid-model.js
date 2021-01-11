@@ -7,6 +7,20 @@ class GridClass {
         this.gridState = null;
     }
 
+    movePiece(targetSquare, selectedPiece) {
+        // swapping selected piece from its initial location with the target square location
+        const targetSqColumn = targetSquare.location.column;
+        const targetSqRow = targetSquare.location.row;
+        const selectedPieceColumn = selectedPiece.location.column;
+        const selectedPieceRow = selectedPiece.location.row;
+        this.gridState[targetSqRow][targetSqColumn].piece = this.gridState[selectedPieceRow][selectedPieceColumn].piece; 
+        // altering selected (and now moved) piece location to the target square location
+        this.gridState[targetSqRow][targetSqColumn].piece.location = targetSquare.location;
+
+        // removing selected piece from initial location
+        this.gridState[selectedPieceRow][selectedPieceColumn].piece = null;
+        this.callPieceLegalMoves();
+    }
 
     initialiseState() {
         /* 
