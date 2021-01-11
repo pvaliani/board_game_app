@@ -1,9 +1,17 @@
 const isPieceSelectedClasses = (currentPiece, selectedPiece) => {
-    let pieceClasses = 'piece ';
+    let pieceClasses = ' ';
     if (currentPiece === selectedPiece) {
         pieceClasses += 'selected-piece ';
     }
     return pieceClasses;
+};
+
+
+const decideColor = piece => {
+    if (piece.userTitle === 'user1') {
+        return 'user1-piece';
+    }
+    return 'user2-piece';
 };
 
 export const pieceAsJSX = (square, currentPlayer, selectedPiece, selectPieceHandler) => {
@@ -19,11 +27,15 @@ export const pieceAsJSX = (square, currentPlayer, selectedPiece, selectPieceHand
         // in that point, we know that the current piece belongs to 
         // the active player. So we also want to get access to this 
         // piece's legal moves (if any).
+        let pieceClasses = 'piece ';
+        const colorClass = decideColor(piece);
+        pieceClasses += colorClass;
         if (piece.userTitle === currentPlayer && piece.legalMoves.length) {
-            const pieceClasses = isPieceSelectedClasses(piece, selectedPiece);
+            const selectedClass = isPieceSelectedClasses(piece, selectedPiece);
+            pieceClasses += selectedClass;
             pieceJSX = <div className={pieceClasses} onClick={() => selectPieceHandler(piece)} > </div>;
         } else {
-            pieceJSX = <div className="piece"> </div>;
+            pieceJSX = <div className={pieceClasses}> </div>;
         }
     }
     return pieceJSX;

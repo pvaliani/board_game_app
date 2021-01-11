@@ -30,7 +30,6 @@
     transform: translate(-50%, -50%);
     width: 50px;
     height: 50px;
-    background-color: red;
     border-radius: 50%;
 }
 
@@ -42,4 +41,12 @@
 .legal-square {
     outline: 3px solid greenyellow;
     z-index: 1;
+}
+
+.user1-piece {
+    background-color: red;
+}
+
+.user2-piece {
+    background-color: lightblue;
 }
