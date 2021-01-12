@@ -3,7 +3,16 @@ import { squareColor } from '../../utils/squareColor';
 import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs/grid-specs';
 import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
+// import useSound hook and the board sound sample
+import useSound from 'use-sound'; 
+import BoardSoundPiece from '../../sounds/selectpiece.mp3';
+import BoardSoundMove from '../../sounds/move.mp3';
+
+
+
+
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
+
 
 let gridInstance;
 const Grid = ({ onSetUserScores }) => {
@@ -17,7 +26,16 @@ const Grid = ({ onSetUserScores }) => {
         console.table(gridInstance.gridState);
     }, []);
 
+    const [playPieceSound] = useSound(BoardSoundPiece);
+    const [playMoveSound] = useSound(BoardSoundMove);
+
     const selectMoveHandler = targetSquare => {
+
+       
+        playMoveSound();  // Play the board sound after a move is performed
+
+       
+
         gridInstance.movePiece(targetSquare, selectedPiece);
         // onSetUserScores(gridInstance.captures);
         
@@ -37,6 +55,11 @@ const Grid = ({ onSetUserScores }) => {
             is already selected (the following if statement)
             then we de-select it, otherwise, we select it.
         */
+
+        
+        playPieceSound(); // Play the board sound when selecting a piece
+
+
         if (piece === selectedPiece) {
             return setSelectedPiece('');
         }
