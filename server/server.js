@@ -3,8 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const createRouter = require('./helpers/create_router');
-
+const socketIo = require('./socket.io/socket');
 const app = express();
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,6 +19,12 @@ MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true })
     })
     .catch(console.error);
 
-app.listen(5000, function() {
+
+const server = app.listen(5000, function () {
     console.log(`Server's app on port ${this.address().port}`);
 });
+
+const io = socketIo.init(server);
+// io.on('connection', socket => {
+//     console.log('Client connected');
+// });

@@ -64,7 +64,7 @@ const Grid = () => {
                     const pieceJSX = pieceAsJSX(square, currentPlayer, selectedPiece, selectPieceHandler);
                     let squareClasses = `square-grid ${sqColorClass}`;
                     let squareJSX = (
-                        <div key={row} className={squareClasses} style={squareStyle}>
+                        <div key={column} className={squareClasses} style={squareStyle}>
                             {pieceJSX}
                         </div>
                     );
