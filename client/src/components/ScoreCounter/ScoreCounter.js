@@ -1,6 +1,6 @@
 import './ScoreCounter.css';
 
-const scorCounter = () => {
+const scoreCounter = () => {
 
     return (
         <div className="score-counter">
@@ -9,4 +9,4 @@ const scorCounter = () => {
     );
 };
 
-export default scorCounter;
+export default scoreCounter;
