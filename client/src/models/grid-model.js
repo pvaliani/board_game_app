@@ -1,7 +1,7 @@
 import Square from './square-model';
 
 class GridClass {
-    constructor(rows, columns) {
+    constructor(columns, rows) {
         this.columns = columns;
         this.rows = rows;
         this.gridState = null;
@@ -15,6 +15,22 @@ class GridClass {
         const selectedPieceRow = selectedPiece.location.row;
 
         // deciding if we did a capturing move
+        this.shouldCapturePiece(targetSquare, selectedPiece);
+
+        this.gridState[targetSqRow][targetSqColumn].piece = { ...this.gridState[selectedPieceRow][selectedPieceColumn].piece };
+
+        // altering selected (and now moved) piece location to the target square location
+        this.gridState[targetSqRow][targetSqColumn].piece.location = targetSquare.location;
+
+        // removing selected piece from initial location
+        this.gridState[selectedPieceRow][selectedPieceColumn].piece = false;
+        this.callPieceLegalMoves('basic');
+        this.callPieceLegalMoves('capturing');
+    }
+
+    shouldCapturePiece(targetSquare, selectedPiece) {
+        const selectedPieceColumn = selectedPiece.location.column;
+        const selectedPieceRow = selectedPiece.location.row;
         const tgLoc = targetSquare.location;
         const slcPieceLoc = selectedPiece.location;
         const wasCapturingMove = Math.abs(tgLoc.column - slcPieceLoc.column) === 2 && Math.abs(tgLoc.row - slcPieceLoc.row) === 2;
@@ -26,23 +42,9 @@ class GridClass {
             const opponentSq = targSqNeighbours.filter(tgNeigh => selectedPieceNeighbours.includes(tgNeigh))[0];
             // remove that opponent
             this.gridState[opponentSq.location.row][opponentSq.location.column].piece = false;
-
         }
-
-        this.gridState[targetSqRow][targetSqColumn].piece = { ...this.gridState[selectedPieceRow][selectedPieceColumn].piece };
-
-        // altering selected (and now moved) piece location to the target square location
-        this.gridState[targetSqRow][targetSqColumn].piece.location = targetSquare.location;
-
-        // removing selected piece from initial location
-        this.gridState[selectedPieceRow][selectedPieceColumn].piece = false;
-        this.callPieceBasicLegalMoves();
-        this.callPieceCapturingLegalMoves();
     }
 
-    capturePiece() {
-
-    }
 
     initialiseState() {
         /* 
@@ -52,18 +54,18 @@ class GridClass {
         const grid = this.rows.map(row => {
             return this.columns.map(column => {
                 // decide if that square (i.e., combination column, row) has a piece
-                if (this._hasPieceInitialState({ column, row })) {
-                    return new Square({ column, row }, true);
+                if (this._hasPieceInitialState({ row, column })) {
+                    return new Square({ row, column }, true);
                 } else {
-                    return new Square({ column, row }, false);
+                    return new Square({ row, column }, false);
                 }
             });
         });
         this.gridState = grid;
         // after we have initialised the grid, we set the legal moves
         // for each and every piece.
-        this.callPieceBasicLegalMoves();
-        this.callPieceCapturingLegalMoves();
+        this.callPieceLegalMoves('basic');
+        this.callPieceLegalMoves('capturing');
     }
 
     _hasPieceInitialState(location) {
@@ -81,7 +83,7 @@ class GridClass {
         return false;
     }
 
-    callPieceBasicLegalMoves() {
+    callPieceLegalMoves(typeOfMove) {
         /* 
             This function has just two for loops
             which sole purpose is to extract out
@@ -93,27 +95,12 @@ class GridClass {
         for (const row of this.gridState) {
             for (const square of row) {
                 if (square.piece) {
-                    square.setPieceBasicLegalMoves(this.gridState);
-                }
-            }
-        }
-
-    }
-    // TODO: refactor this to one function
-    callPieceCapturingLegalMoves() {
-        /* 
-            This function has just two for loops
-            which sole purpose is to extract out
-            one square at a time (iteration).
-            Then, if the square has a piece on it,
-            we invoking the setPieceLaglMoves function
-            which sets the piece's legal moves.
-        */
-        for (const row of this.gridState) {
-            for (const square of row) {
-                if (square.piece) {
-                    square.setPieceCapturingLegalMoves(this.gridState);
-                    square.mergeLegalMoves();
+                    if (typeOfMove === 'basic') {
+                        square.setPieceBasicLegalMoves(this.gridState);
+                    } else {
+                        square.setPieceCapturingLegalMoves(this.gridState);
+                        square.mergeLegalMoves();
+                    }
                 }
             }
         }

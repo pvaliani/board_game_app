@@ -1,4 +1,4 @@
-export const squareColor = (col, row) => {
+export const squareColor = (row, col) => {
 
     let squareColor;
     
