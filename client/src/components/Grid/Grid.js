@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 
 let gridInstance;
-const Grid = () => {
+const Grid = ({ onSetUserScores }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
 
@@ -19,6 +19,7 @@ const Grid = () => {
 
     const selectMoveHandler = targetSquare => {
         gridInstance.movePiece(targetSquare, selectedPiece);
+        console.log(gridInstance.captures, 'Grid.js', 'line: ', '22');
         if (currentPlayer === 'user1') {
             setCurrentPlayer('user2'); // triggers another cycle
         } else {

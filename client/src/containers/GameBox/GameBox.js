@@ -6,12 +6,12 @@ import { useState } from 'react';
 
 const GameBox = () => {
     const [users, setUsers] = useState({});
-    
+    const [userScores, setUserScores] = useState({});
 
     return (
         <main className="main-container">
             <Header onSetUsers={setUsers}/>
-            <CheckerBoard />
+            <CheckerBoard onSetUserScores={setUserScores} />
             <ScoreBoard /> 
         </main>
     );
