@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 
 let gridInstance;
-const Grid = ({ onSetUserScores }) => {
+const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
 
@@ -17,9 +17,20 @@ const Grid = ({ onSetUserScores }) => {
         console.table(gridInstance.gridState);
     }, []);
 
+    useEffect(() => { 
+        gridInstance.initialiseState();
+        setCurrentPlayer('user1');
+        setResetState('false');
+        console.log(gridInstance.captures);
+        gridInstance.captures = {
+            user1: 0,
+            user2: 0
+        };
+        console.log(gridInstance.captures);
+    }, [resetState])
+      
     const selectMoveHandler = targetSquare => {
         gridInstance.movePiece(targetSquare, selectedPiece);
-        // onSetUserScores(gridInstance.captures);
         
         onSetUserScores({ ...gridInstance.captures });
         if (currentPlayer === 'user1') {

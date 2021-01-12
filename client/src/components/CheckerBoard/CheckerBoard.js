@@ -1,10 +1,10 @@
 import './CheckerBoard.css';
 import Grid from '../Grid/Grid'
-const CheckerBoard = ({ onSetUserScores }) => {
+const CheckerBoard = ({ onSetUserScores, resetState, setResetState }) => {
 
     return (
         <section className="checker-board-section">
-            <Grid onSetUserScores={onSetUserScores} />
+            <Grid resetState={resetState} setResetState={setResetState} onSetUserScores={onSetUserScores}/>
         </section>
     );
 };

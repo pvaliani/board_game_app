@@ -5,13 +5,13 @@ import ResetBox from '../ResetBox/ResetBox';
 
 
 
-const Header = ({ onSetUsers }) => {
+const Header = ({ onSetUsers, setResetState }) => {
 
     return (
         <section className="header-section">
             <UserForm  onSetUsers={onSetUsers}/>
             <Title />
-            <ResetBox />
+            <ResetBox setResetState={setResetState}/>
         </section>
     );
 };

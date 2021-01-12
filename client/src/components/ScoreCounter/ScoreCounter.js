@@ -1,6 +1,7 @@
 import './ScoreCounter.css';
 
 const scoreCounter = ({ userScores }) => {
+
     return (
         <div className="score-counter">
             <div>User1: {userScores['user1']}</div>

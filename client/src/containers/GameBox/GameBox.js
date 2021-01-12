@@ -7,11 +7,13 @@ import { useState } from 'react';
 const GameBox = () => {
     const [users, setUsers] = useState({});
     const [userScores, setUserScores] = useState({});
+    const [resetState, setResetState] = useState("")
 
+    console.log(resetState);
     return (
         <main className="main-container">
-            <Header onSetUsers={setUsers}/>
-            <CheckerBoard onSetUserScores={setUserScores} />
+            <Header setResetState={setResetState} onSetUsers={setUsers}/>
+            <CheckerBoard resetState={resetState} setResetState={setResetState} onSetUserScores={setUserScores} />
             <ScoreBoard userScores={userScores} /> 
         </main>
     );
