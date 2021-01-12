@@ -13,7 +13,7 @@ const Header = ({ onSetUsers }) => {
             <UserForm  onSetUsers={onSetUsers}/>
             <Title />
             <ResetBox />
-            <BoardSounds />
+            {/* <BoardSounds /> */}
         </section>
     );
 };

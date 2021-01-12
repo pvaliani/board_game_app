@@ -1,17 +1,17 @@
 
-import Button from '../Button/Button';
+// import Button from '../Button/Button';
 
-import useSound from 'use-sound'; 
-import BoardSoundClick from '../../sounds/boardsound.mp3';
+// import useSound from 'use-sound'; 
+// import BoardSoundClick from '../../sounds/boardsound.mp3';
 
 
-const BoardSounds = () => {
+// const BoardSounds = () => {
 
-  const [play] = useSound(BoardSoundClick);
+//   const [play] = useSound(BoardSoundClick);
 
-  return <Button title="BoardSound" onSubmit={play}/>;
+//   return <Button title="BoardSound" onSubmit={play}/>;
 
-};
+// };
 
-export default BoardSounds;
+// export default BoardSounds;
 

@@ -5,7 +5,8 @@ import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
 // import useSound hook and the board sound sample
 import useSound from 'use-sound'; 
-import BoardSoundClick from '../../sounds/boardsound.mp3';
+import BoardSoundPiece from '../../sounds/selectpiece.mp3';
+import BoardSoundMove from '../../sounds/move.mp3';
 
 
 
@@ -25,12 +26,13 @@ const Grid = ({ onSetUserScores }) => {
         console.table(gridInstance.gridState);
     }, []);
 
-    const [play] = useSound(BoardSoundClick);
+    const [playPieceSound] = useSound(BoardSoundPiece);
+    const [playMoveSound] = useSound(BoardSoundMove);
 
     const selectMoveHandler = targetSquare => {
 
        
-        play();  // Play the board sound after a move is performed
+        playMoveSound();  // Play the board sound after a move is performed
 
        
 
@@ -55,7 +57,7 @@ const Grid = ({ onSetUserScores }) => {
         */
 
         
-        play(); // Play the board sound when selecting a piece
+        playPieceSound(); // Play the board sound when selecting a piece
 
 
         if (piece === selectedPiece) {
