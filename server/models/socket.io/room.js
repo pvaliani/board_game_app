@@ -12,6 +12,18 @@ class Room {
         }
     }
 
+    hasUserWithId(id) {
+        return this.users.some(user => user.id === id);
+    }
+
+    removeUserById(id) {
+        this.users = this.users.filter(user => user.id !== id);
+    }
+
+    isEmpty() {
+        return this.users.length === 0;
+    }
+
     roomAvailable() {
         return this.users.length < 2;
     }

@@ -4,14 +4,14 @@ const rooms = require('../repositories/rooms').getRooms();
 const roomNameGen = require('../helpers/generate_room_name');
 
 module.exports = socket => {
-    socket.on('create-room', ({ grid, userName }) => {
-        console.log(socket, 'create_room.js', 'line: ', '6');
+    socket.on('create-room', ({ grid, userName }, cb) => {
         const roomName = roomNameGen(10);
         socket.join(roomName);
         const user = new User(userName, socket.id);
         const room = new Room(grid, socket.id, roomName);
         room.addUser(user);
+        cb(room); // set room as react state
         rooms.addRoom(room);
-        socket.emit('room-created', { status: 'success' });
+        socket.broadcast.emit('room-created', rooms.getAvailableRooms());
     });
 };

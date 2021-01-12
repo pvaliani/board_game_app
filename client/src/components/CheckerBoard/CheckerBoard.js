@@ -1,10 +1,12 @@
 import './CheckerBoard.css';
 import Grid from '../Grid/Grid'
-const CheckerBoard = () => {
+import GridMulti from '../GridMulti/GridMulti';
+
+const CheckerBoard = ({ type }) => {
 
     return (
         <section className="checker-board-section">
-            <Grid />
+            {type === 'locally' ? <Grid /> : <GridMulti />}
         </section>
     );
 };
