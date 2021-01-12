@@ -1,13 +1,15 @@
 
 import Button from '../Button/Button';
 
-import useSound from 'use-sound';
-import BoardSoundsLibrary from '../../sound_files/boardsound.mp3';
+import useSound from 'use-sound'; 
+import BoardSoundClick from '../../sounds/boardsound.mp3';
 
 
 const BoardSounds = () => {
-  const [play] = useSound(BoardSoundsLibrary);
-  return <Button title="BoardSound" onClick={play}/>;
+
+  const [play] = useSound(BoardSoundClick);
+
+  return <Button title="BoardSound" onSubmit={play}/>;
 
 };
 
