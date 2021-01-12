@@ -9,7 +9,6 @@ const GameBox = () => {
     const [userScores, setUserScores] = useState({});
     const [resetState, setResetState] = useState("")
 
-    console.log(resetState);
     return (
         <main className="main-container">
             <Header setResetState={setResetState} onSetUsers={setUsers}/>
