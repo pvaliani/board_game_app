@@ -21,13 +21,11 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         gridInstance.initialiseState();
         setCurrentPlayer('user1');
         setResetState('false');
-        console.log(gridInstance.captures);
         gridInstance.captures = {
             user1: 0,
             user2: 0
         };
         onSetUserScores({ ...gridInstance.captures });
-        console.log(gridInstance.captures);
     }, [resetState])
       
     const selectMoveHandler = targetSquare => {
