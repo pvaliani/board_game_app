@@ -26,6 +26,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
             user1: 0,
             user2: 0
         };
+        onSetUserScores({ ...gridInstance.captures });
         console.log(gridInstance.captures);
     }, [resetState])
       
