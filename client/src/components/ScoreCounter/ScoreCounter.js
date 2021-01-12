@@ -1,12 +1,13 @@
 import './ScoreCounter.css';
 
-const scorCounter = () => {
-
+const scoreCounter = ({ userScores }) => {
+    console.log(userScores, 'ScoreCounter.js', 'line: ', '4');
     return (
         <div className="score-counter">
-            i am the score counter
+            <div>User1: {userScores['user1']}</div>
+            <div>User2: {userScores['user2']}</div>
         </div>
     );
 };
 
-export default scorCounter;
+export default scoreCounter;

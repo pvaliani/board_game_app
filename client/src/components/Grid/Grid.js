@@ -19,7 +19,10 @@ const Grid = ({ onSetUserScores }) => {
 
     const selectMoveHandler = targetSquare => {
         gridInstance.movePiece(targetSquare, selectedPiece);
-        console.log(gridInstance.captures, 'Grid.js', 'line: ', '22');
+        onSetUserScores({ ...gridInstance.captures });
+
+        console.log(gridInstance.captures, 'Grid.js', 'line: ', '23');
+        console.log('here', 'Grid.js', 'line: ', '23');
         if (currentPlayer === 'user1') {
             setCurrentPlayer('user2'); // triggers another cycle
         } else {

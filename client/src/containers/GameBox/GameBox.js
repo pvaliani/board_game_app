@@ -12,7 +12,7 @@ const GameBox = () => {
         <main className="main-container">
             <Header onSetUsers={setUsers}/>
             <CheckerBoard onSetUserScores={setUserScores} />
-            <ScoreBoard /> 
+            <ScoreBoard userScores={userScores} /> 
         </main>
     );
 };
