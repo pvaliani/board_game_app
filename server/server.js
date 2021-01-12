@@ -3,7 +3,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const createRouter = require('./helpers/create_router');
-const socketIo = require('./socket.io/socket');
 const app = express();
 
 
@@ -24,7 +23,3 @@ const server = app.listen(5000, function () {
     console.log(`Server's app on port ${this.address().port}`);
 });
 
-const io = socketIo.init(server);
-// io.on('connection', socket => {
-//     console.log('Client connected');
-// });

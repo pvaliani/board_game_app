@@ -73,7 +73,7 @@ const Grid = () => {
                         // is a legal move of the selected piece.
                         squareClasses += 'legal-square ';
                         squareJSX = (
-                            <div key={row} className={squareClasses} style={squareStyle} onClick={() => selectMoveHandler(square)}>
+                            <div key={column} className={squareClasses} style={squareStyle} onClick={() => selectMoveHandler(square)}>
                                 {pieceJSX}
                             </div>
                         );
