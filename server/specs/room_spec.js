@@ -9,6 +9,9 @@ describe('Room', function () {
     it('should contain a grid', function() {
         assert.deepStrictEqual(room1.grid, []);
     });
-    it('should have a name');
+
+    it('should have a name', function () {
+        assert.strictEqual(room1.name, 'Lobby');
+    });
     it('should start with an empty array of users');
 });
