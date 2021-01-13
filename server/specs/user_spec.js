@@ -1,9 +1,17 @@
 const assert = require('assert');
+const User = require('../models/user/user.js');
 const user = require("../models/user/user.js")
 
 
 describe("User", function () {
-    it('should have a name');
+    beforeEach(function () {
+        user1 = new User("Davy123"); 
+    });
+
+    it('should have a name', function () {
+        assert.strictEqual(user1.userName, "Davy123");
+    });
+
     it('wins should start at zero');
     it('losses should start at zero');
     
