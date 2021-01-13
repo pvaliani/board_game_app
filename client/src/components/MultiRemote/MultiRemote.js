@@ -14,13 +14,12 @@ const MultiRemote = () => {
     useEffect(() => {
         socket = getSocket();
         socket.on('rooms-list', rooms => {
+            console.log(rooms, 'MultiRemote.js', 'line: ', '17');
             setRooms(rooms);
         });
-        socket.on('room-created', rooms => {
-            setRooms(rooms);
-        });
-
         socket.emit('looking-for-room');
+
+        return () => socket.off('rooms-list');
     }, []);
 
     // joining room user 2
@@ -40,7 +39,7 @@ const MultiRemote = () => {
     };
 
     const roomsJSX = rooms.map(room => {
-        return <div key={room.name} style={{ cursor: 'pointer' }} onClick={() => joinRoomHandler(room.name)}>{room.users[0].name}</div>;
+        return <div key={room.name} style={{ cursor: 'pointer' }} onClick={() => joinRoomHandler(room.name)}>{room.users[0].userName}</div>;
     });
 
     return (

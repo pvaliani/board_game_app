@@ -35,18 +35,24 @@ const GridMulti = () => {
             setRoom(incomingData.room);
         }
 
-        socket.on('opponent-moved', incomingData => {
-            gridInstance.createState(incomingData.room.grid);
-            setCurrentPlayer(incomingData.currentPlayer);
+        socket.on('opponent-moved', ({ room, currentPlayer }) => {
+            gridInstance.createState(room.grid);
+            setCurrentPlayer(currentPlayer);
         });
 
         socket.on('opponent-left', () => {
+            console.log('socektId', 'GridMulti.js', 'line: ', '44');
             gridInstance = new GridClass(rows, columns);
             gridInstance.initialiseState();
             setCurrentPlayer('user1'); // triggers another cycle
             // socket.emit('create-room', { grid: gridInstance.gridState, userName: incomingData.userObj.userName }, room => setRoom(room));
         });
 
+        return () => {
+            socket.emit('disconnecting-client');
+            socket.off('opponent-moved');
+            socket.off('opponent-left');
+        };
     }, []);
 
     const selectMoveHandler = targetSquare => {

@@ -1,4 +1,3 @@
-import { squareStyle } from "../gridSpecs/grid-specs";
 
 class Square {
     constructor(location, hasPiece, userTitle) {

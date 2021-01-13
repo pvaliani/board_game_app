@@ -28,9 +28,9 @@ class RoomsClass {
         return this.rooms.filter(room => room.roomAvailable());
     }
 
-    removeLeaverFromRoom(id) {
-            const room = this.getRoomByName(id);
-            room && room.removeUserById(id);
+    removeLeaverFromRoom(socektId, roomName) {
+            const room = this.getRoomByName(roomName);
+            room && room.removeUserById(socektId);
     }
 }
 

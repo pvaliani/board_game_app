@@ -1,9 +1,8 @@
 class Room {
-    constructor (grid, name, id){
+    constructor (grid, name){
         this.users = [];
         this.grid = grid;
         this.name = name;
-        this.id = id;
     }
 
     addUser(user) {

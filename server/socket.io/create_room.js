@@ -8,10 +8,10 @@ module.exports = socket => {
         const roomName = roomNameGen(10);
         socket.join(roomName);
         const user = new User(userName, socket.id);
-        const room = new Room(grid, socket.id, roomName);
+        const room = new Room(grid, roomName);
         room.addUser(user);
         cb(room); // set room as react state
         rooms.addRoom(room);
-        socket.broadcast.emit('room-created', rooms.getAvailableRooms());
+        socket.broadcast.emit('rooms-list', rooms.getAvailableRooms());
     });
 };
