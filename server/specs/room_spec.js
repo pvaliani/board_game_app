@@ -1,12 +1,12 @@
 const assert = require('assert');
 const Room = require('../models/socket.io/room.js');
-const User = require('../models/user/user.js');
+const User = require('../models/socket.io/user.js');
 
 describe('Room', function () {
     beforeEach(function() {
         room1 = new Room([], "Lobby");
-        user1 = new User('CoolBill');
-        user2 = new User('FunkyAly', 1 , 2);
+        user1 = new User('CoolBill', 0, 0, "293jf8d4");
+        user2 = new User('FunkyAly', 1 , 2, "jdja830");
     });
 
     it('should contain a grid', function() {
@@ -26,4 +26,10 @@ describe('Room', function () {
         room1.addUser(user2);
         assert.deepStrictEqual(room1.users, [user1, user2]);
     });
+
+    it('should have a user with an id', function() {
+        room1.addUser(user1);
+        assert.strictEqual(room1.users[0].id, "293jf8d4");
+    });
+
 });
