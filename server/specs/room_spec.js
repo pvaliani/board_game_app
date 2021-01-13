@@ -5,8 +5,8 @@ const User = require('../models/socket.io/user.js');
 describe('Room', function () {
     beforeEach(function() {
         room1 = new Room([], "Lobby");
-        user1 = new User('CoolBill', 0, 0, "293jf8d4");
-        user2 = new User('FunkyAly', 1 , 2, "jdja830");
+        user1 = new User('CoolBill', 0, 0, '293jf8d4');
+        user2 = new User('FunkyAly', 1 , 2, 'jdja830');
     });
 
     it('should contain a grid', function() {
@@ -29,7 +29,13 @@ describe('Room', function () {
 
     it('should have a user with an id', function() {
         room1.addUser(user1);
-        assert.strictEqual(room1.users[0].id, "293jf8d4");
+        assert.strictEqual(room1.users[0].id, '293jf8d4');
+    });
+
+    it('should remove user by ID', function() {
+        room1.addUser(user2);
+        room1.removeUserById('jdja830')
+        assert.strictEqual(room1.users.length, 0);
     });
 
 });
