@@ -11,7 +11,12 @@ const CheckerBoard = ({ type, onSetUserScores, resetState, setResetState, setPla
                 onSetUserScores={onSetUserScores}
                 resetState={resetState}
                 setResetState={setResetState}
-            /> : <GridMulti />}
+            /> : <GridMulti
+                    setPlayerStats={setPlayerStats}
+                    onSetUserScores={onSetUserScores}
+                    resetState={resetState}
+                    setResetState={setResetState}
+                />}
         </section>
     );
 };

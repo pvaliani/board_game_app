@@ -14,7 +14,6 @@ const MultiRemote = () => {
     useEffect(() => {
         socket = getSocket();
         socket.on('rooms-list', rooms => {
-            console.log(rooms, 'MultiRemote.js', 'line: ', '17');
             setRooms(rooms);
         });
         socket.emit('looking-for-room');
@@ -24,17 +23,21 @@ const MultiRemote = () => {
 
     // joining room user 2
     const joinRoomHandler = roomName => {
+        const userObj = location.state;
         const userName = location.state.userName;
-        socket.emit('join-room', { userName, roomName });
+        socket.emit('join-room', { userObj, roomName });
         socket.on('joined-room', room => {
+            room.users[0].wins = location.state.wins;
+            room.users[0].losses = location.state.losses;
             socket.emit('room-clean-up');
-            history.push('/play-remotely', { user: 'user2', room: room, userName: userName });
+            history.push('/play-remotely', { user: 'user2', room: room, userName: userName, userObj: userObj });
         });
     };
 
     // creating room user 1
     const createGameHandler = () => {
         const user = location.state;
+        console.log(user, 'MultiRemote.js', 'line: ', '40'); // has wins and losses
         history.push('/play-remotely', { user: 'user1', userObj: user });
     };
 

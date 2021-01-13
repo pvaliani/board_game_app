@@ -6,47 +6,79 @@ import { useEffect, useState } from 'react';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 import { getSocket } from '../../socket.io/socket';
 import { Prompt, useLocation } from 'react-router-dom';
+import useSound from 'use-sound';
+import BoardSoundPiece from '../../sounds/selectpiece.mp3';
+import BoardSoundMove from '../../sounds/move.mp3';
+import BoardSoundWin from '../../sounds/GameWin.mp3';
+import BoardSoundCapture from '../../sounds/CaptureOpponent.mp3';
+import BoardSoundMultiCapture from '../../sounds/GunSingleCapture.mp3';
+import { increaseWinOrLosses } from '../../services/user-services';
 
 // decide functionality for user2 (should it be same component or different one?)
 let gridInstance;
-const changeTurn = {
+const swapPlayers = {
     user1: 'user2',
     user2: 'user1'
 };
 
-const GridMulti = () => {
+const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
     const [socket, setSocket] = useState(getSocket());
     const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
+    const [winner, setWinner] = useState({});
     const [room, setRoom] = useState(null);
     const location = useLocation();
+    const [playPieceSound] = useSound(BoardSoundPiece);
+    const [playMoveSound] = useSound(BoardSoundMove);
+    const [playWinSound] = useSound(BoardSoundWin);
+    const [playCaptureSound] = useSound(BoardSoundCapture);
+    const [playMultiCaptureSound] = useSound(BoardSoundMultiCapture);
 
     useEffect(() => {
+        setShouldBlockNavigation(true);
         window.onbeforeunload = function (e) {
             e.preventDefault();
             return "you can not refresh the page";
-        }
-
+        };
         const incomingData = location.state;
         gridInstance = new GridClass(rows, columns);
         if (incomingData.user === 'user1') {
+            // setPlayerStats({ user1: incomingData.userObj, user2: '' });
             gridInstance.initialiseState();
             setCurrentPlayer('user1'); // triggers another cycle
-            socket.emit('create-room', { grid: gridInstance.gridState, userName: incomingData.userObj.userName }, room => setRoom(room));
+            socket.emit('create-room', { grid: gridInstance.gridState, userObj: incomingData.userObj }, room => setRoom(room));
         } else if (incomingData.user === 'user2') {
             gridInstance.createState(incomingData.room.grid);
             setCurrentPlayer(''); // triggers another cycle
             setRoom(incomingData.room);
+            setPlayerStats({ user1: incomingData.room.users[0], user2: incomingData.room.users[1] });
+            gridInstance.addUserNames(incomingData.room.users[1].userName, incomingData.room.users[0].userName);
+            onSetUserScores({ ...gridInstance.captures });
         }
+
+        socket.on('someone-joined', room => {
+            setRoom(room);
+            setPlayerStats({ user1: room.users[0], user2: room.users[1] });
+            gridInstance.addUserNames(room.users[1].userName, room.users[0].userName);
+            onSetUserScores({ ...gridInstance.captures });
+        });
 
         socket.on('opponent-moved', ({ room, currentPlayer }) => {
             gridInstance.createState(room.grid);
+            gridInstance.calculateScore();
+            playMoveSound();
+            onSetUserScores({ ...gridInstance.captures });
             setCurrentPlayer(currentPlayer);
+            const usersObj = { user1: room.users[0], user2: room.users[1] };
+            if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
+                playWinSound();
+                setPlayerStats({ ...usersObj });
+                return setWinner(usersObj[swapPlayers[currentPlayer]]);
+            }
         });
 
         socket.on('opponent-left', () => {
-            console.log('socektId', 'GridMulti.js', 'line: ', '44');
             gridInstance = new GridClass(rows, columns);
             gridInstance.initialiseState();
             setCurrentPlayer('user1'); // triggers another cycle
@@ -55,17 +87,46 @@ const GridMulti = () => {
         return () => {
             window.onbeforeunload = () => { };
             socket.emit('i-am-leaving');
+            socket.off('someone-left');
             socket.off('opponent-moved');
             socket.off('opponent-left');
+            setShouldBlockNavigation(false);
         };
     }, []);
 
     const selectMoveHandler = targetSquare => {
-        gridInstance.movePiece(targetSquare, selectedPiece);
+        const usersObj = { user1: room.users[0], user2: room.users[1] };
+        const moveObj = gridInstance.movePiece(targetSquare, selectedPiece);
+        onSetUserScores({ ...gridInstance.captures });
         room.grid = gridInstance.gridState;
-        socket.emit('i-moved', { currentPlayer: changeTurn[currentPlayer], room: room });
-        setCurrentPlayer(''); // triggers another cycle
-        setSelectedPiece('');
+        gridInstance.calculateScore();
+        if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
+            usersObj[currentPlayer].wins += 1;
+            usersObj[swapPlayers[currentPlayer]].losses += 1;
+            increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
+            increaseWinOrLosses(usersObj[swapPlayers[currentPlayer]].userName, 'losses', usersObj[swapPlayers[currentPlayer]].losses);
+            playWinSound();
+            setPlayerStats({ ...usersObj });
+            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
+            return setWinner(usersObj[currentPlayer]);
+        }
+        if (moveObj.moveType === 'capturing-double') {
+            setSelectedPiece(moveObj.targetSquare.piece);
+            playMultiCaptureSound();  // Play the board sound after a move is performed
+        } else if (moveObj.moveType === 'basic'){
+            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
+            setSelectedPiece('');
+            setCurrentPlayer('');
+            playMoveSound();  // Play the board sound after a move is performed
+        } else { // single capture
+            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
+            setSelectedPiece('');
+            setCurrentPlayer('');
+            playCaptureSound();  // Play the board sound after a move is performed
+        }
+
+
+
     };
 
 
@@ -81,7 +142,10 @@ const GridMulti = () => {
         }
         setSelectedPiece(piece);
     };
-
+    const playAgainHandler = () => {
+        setWinner({});
+        setResetState('true');
+    };
     const gridJSX = rows.map(row => {
         /* 
             This function creates the grid. The grid is a 
@@ -131,7 +195,15 @@ const GridMulti = () => {
     return (
         <>
             <div className="grid" style={gridStyle}>
+                {room && <p className="user1-name">{room.users[0].userName}</p>}
                 {gridJSX}
+                {!!Object.keys(winner).length && <div className="winner-announcement">
+                    🥳 Winner is {winner.userName} 🥳
+                <div className="play-again-btn" onClick={playAgainHandler}>
+                        Play again!
+                </div>
+                </div>}
+                {(room && room.users.length === 2) && <p className="user2-name">{room.users[1].userName}</p>}
             </div>
             <Prompt
                 when={shouldBlockNavigation}

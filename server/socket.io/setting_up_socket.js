@@ -11,7 +11,7 @@ module.exports = (io) => {
         
     looking_for_rooms(socket);    
     createRoom(socket);
-    joinRoom(socket);
+    joinRoom(socket, io);
     moved(socket);
     clean_up(socket, io);
     disconnect(socket, io);

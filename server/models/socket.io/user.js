@@ -1,6 +1,8 @@
 class User {
-    constructor (userName, id) {
+    constructor (userName, wins, losses, id) {
         this.userName = userName;
+        this.wins = wins;
+        this.losses = losses;
         this.id = id;
     }
 }

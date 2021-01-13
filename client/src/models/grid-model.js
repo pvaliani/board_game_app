@@ -18,6 +18,24 @@ class GridClass {
         };
     }
 
+    calculateScore() {
+        let user1Score = 0;
+        let user2Score = 0;
+        for (const row of this.gridState) {
+            for (const square of row) {
+                if (square.piece) {
+                    if(square.piece.userTitle === 'user1') {
+                        user1Score += 1;
+                    } else {
+                        user2Score += 1;
+                    }
+                }
+            }
+        }
+        this.captures['user1'].score = 12 - user1Score;
+        this.captures['user2'].score = 12 - user2Score;
+    }
+
     movePiece(targetSquare, selectedPiece) {
         // swapping selected piece from its initial location with the target square location
         const targetSqColumn = targetSquare.location.column;

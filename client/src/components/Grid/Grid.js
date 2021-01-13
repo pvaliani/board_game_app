@@ -37,11 +37,11 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
         window.onbeforeunload = (e) => {
             history.push('/play-locally', usersObj);
             };
+
         gridInstance = new GridClass(rows, columns);
         gridInstance.initialiseState();
         gridInstance.addUserNames(usersObj['user1'].userName, usersObj['user2'].userName);
         setCurrentPlayer('user1'); // triggers another cycle
-        console.log(usersObj, 'Grid.js', 'line: ', '33');
         setPlayerStats({ ...usersObj });
             return () => window.onbeforeunload = {};
     }, []);
@@ -66,7 +66,6 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
        
 
         onSetUserScores({ ...gridInstance.captures });
-        increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
         if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
             usersObj[currentPlayer].wins += 1;
             usersObj[swapPlayers[currentPlayer]].losses += 1;
