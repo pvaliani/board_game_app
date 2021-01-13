@@ -123,6 +123,8 @@ class GridClass {
             });
         });
         this.gridState = grid;
+        this.captures.user1.score = 0;
+        this.captures.user2.score = 0;
         // after we have initialised the grid, we set the legal moves
         // for each and every piece.
         this.callPieceLegalMoves('basic');

@@ -4,12 +4,12 @@ import ResetBox from '../ResetBox/ResetBox';
 
 
 
-const Header = ({ setResetState }) => {
+const Header = ({ type, setResetState }) => {
 
     return (
         <section className="header-section">
             <Title />
-            <ResetBox setResetState={setResetState}/>
+            {type === 'locally' && <ResetBox setResetState={setResetState} />}
         </section>
     );
 };

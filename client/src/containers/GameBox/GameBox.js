@@ -11,7 +11,7 @@ const GameBox = ({ type }) => {
 
     return (
         <main className="main-container">
-            <Header setResetState={setResetState} />
+            <Header type={type} setResetState={setResetState} />
             <CheckerBoard
                 setPlayerStats={setPlayerStats}
                 resetState={resetState}

@@ -78,6 +78,14 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
             }
         });
 
+        socket.on('play-again', () => {
+            setWinner({});
+            gridInstance.initialiseState();
+            console.log(currentPlayer, 'GridMulti.js', 'line: ', '84');
+            setResetState('false');
+            onSetUserScores({ ...gridInstance.captures });
+        });
+
         socket.on('opponent-left', () => {
             gridInstance = new GridClass(rows, columns);
             gridInstance.initialiseState();
@@ -87,6 +95,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
         return () => {
             window.onbeforeunload = () => { };
             socket.emit('i-am-leaving');
+            socket.off('play-again');
             socket.off('someone-left');
             socket.off('opponent-moved');
             socket.off('opponent-left');
@@ -113,7 +122,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
         if (moveObj.moveType === 'capturing-double') {
             setSelectedPiece(moveObj.targetSquare.piece);
             playMultiCaptureSound();  // Play the board sound after a move is performed
-        } else if (moveObj.moveType === 'basic'){
+        } else if (moveObj.moveType === 'basic') {
             socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
             setSelectedPiece('');
             setCurrentPlayer('');
@@ -124,8 +133,6 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
             setCurrentPlayer('');
             playCaptureSound();  // Play the board sound after a move is performed
         }
-
-
 
     };
 
@@ -142,8 +149,22 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
         }
         setSelectedPiece(piece);
     };
+
+    useEffect(() => {
+            gridInstance.initialiseState();
+            setResetState('false');
+            onSetUserScores({ ...gridInstance.captures });
+
+    }, [resetState]);
+
     const playAgainHandler = () => {
+        socket.emit('i-won', room.name);
         setWinner({});
+        if (currentPlayer === 'user1') {
+            setCurrentPlayer('user1');
+        } else {
+            setCurrentPlayer('');
+        }
         setResetState('true');
     };
     const gridJSX = rows.map(row => {
