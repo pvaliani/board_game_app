@@ -27,6 +27,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     useEffect(() => {
         gridInstance = new GridClass(rows, columns);
         gridInstance.initialiseState();
+        gridInstance.addUserNames(usersObj['user1'].userName, usersObj['user2'].userName);
         setCurrentPlayer('user1'); // triggers another cycle
     }, []);
 
@@ -34,14 +35,11 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         gridInstance.initialiseState();
         setCurrentPlayer('user1');
         setResetState('false');
-        gridInstance.captures = {
-            user1: 0,
-            user2: 0
-        };
-        onSetUserScores({ ...gridInstance.captures });
-    }, [resetState])
+        gridInstance.addUserNames(usersObj['user1'].userName, usersObj['user2'].userName);
 
-    
+        onSetUserScores({ ...gridInstance.captures });
+
+    }, [resetState])
 
     const playAgainHandler = () => {
         setWinner(usersObj[currentPlayer]);
@@ -55,7 +53,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         onSetUserScores({ ...gridInstance.captures });
         setSelectedPiece('');
 
-        if (gridInstance.captures.user1 === 12 || gridInstance.captures.user2 === 12) {
+        if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
             return setWinner(usersObj[currentPlayer]);
         }
         setCurrentPlayer(swapPlayers[currentPlayer]);

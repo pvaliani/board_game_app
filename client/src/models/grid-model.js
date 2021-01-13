@@ -6,8 +6,15 @@ class GridClass {
         this.rows = rows;
         this.gridState = null;
         this.captures = {
-            user1: 0,
-            user2: 0
+            user1: {score: 0, userName: ''},
+            user2: {score: 0, userName: ''}
+        };
+    }
+
+    addUserNames(user1, user2) {
+        this.captures = {
+            user1: {score: 0, userName: user1},
+            user2: {score: 0, userName: user2}
         };
     }
 
@@ -40,7 +47,7 @@ class GridClass {
         const wasCapturingMove = Math.abs(tgLoc.column - slcPieceLoc.column) === 2 && Math.abs(tgLoc.row - slcPieceLoc.row) === 2;
         if (wasCapturingMove) {
             const victor = selectedPiece.userTitle;
-            this.captures[victor] += 1;
+            this.captures[victor].score += 1;
             // if we did a capturing move, remove opponent
             // getting neighbours of target square
             const targSqNeighbours = targetSquare.getNeighbourSquares(this.gridState);
