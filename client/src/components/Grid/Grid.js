@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
-
+import { increaseWinOrLosses } from '../../services/user-services';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 import { useLocation } from 'react-router-dom';
 
@@ -22,6 +22,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     const [winner, setWinner] = useState({});
     const [playPieceSound] = useSound(BoardSoundPiece);
     const [playMoveSound] = useSound(BoardSoundMove);
+    const [playerStats, setPlayerStats] = useState();
     const usersObj = useLocation().state;
 
     useEffect(() => {
@@ -54,6 +55,11 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         setSelectedPiece('');
 
         if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
+            // TODO: increment back end
+            increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins + 1);
+            increaseWinOrLosses(usersObj[swapPlayers[currentPlayer]].userName, 'losses', usersObj[currentPlayer].losses + 1);
+
+            // front end increase
             return setWinner(usersObj[currentPlayer]);
         }
         setCurrentPlayer(swapPlayers[currentPlayer]);
@@ -129,7 +135,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
             <p className="user1-name">{usersObj['user1'].userName}</p>
             {gridJSX}
             {!!Object.keys(winner).length && <div className="winner-announcement">
-                🥳 Winner is {winner.userName} 🥳 
+                🥳 Winner is {winner.userName} 🥳
                 <div className="play-again-btn" onClick={playAgainHandler}>
                     Play again!
                 </div>

@@ -16,3 +16,21 @@ export const verifyUser = (userName) => {
     .then(res => res.json()) // returning the result of the first promise (just the request) 
     .catch(console.error);
 };
+
+
+export const increaseWinOrLosses = (userName, type, updatedScore) => {
+    /* 
+        This function updates the back-end user object
+        so as to either increase the wins or the losses
+        of the user.
+    */
+    return fetch(baseURL + userName, { 
+        method: 'POST',
+        body: JSON.stringify({ [type]:  updatedScore}),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json()) // returning the result of the first promise (just the request) 
+    .catch(console.error);
+};
