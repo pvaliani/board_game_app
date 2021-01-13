@@ -65,7 +65,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
 
         onSetUserScores({ ...gridInstance.captures });
         increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
-        if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
+        if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
             usersObj[currentPlayer].wins += 1;
             usersObj[swapPlayers[currentPlayer]].losses += 1;
             increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);

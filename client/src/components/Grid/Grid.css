@@ -83,6 +83,7 @@
     grid-template-rows: 1fr 1fr;
     border-radius: 10px;
     text-transform: capitalize;
+    z-index: 2;
 }
 
 .play-again-btn {
@@ -93,6 +94,7 @@
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
+    z-index: 2;
 }
 
 .user1-name {
