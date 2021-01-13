@@ -42,7 +42,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     }, [resetState])
 
     const playAgainHandler = () => {
-        setWinner(usersObj[currentPlayer]);
+        setWinner({});
         setResetState('true');
     };
 

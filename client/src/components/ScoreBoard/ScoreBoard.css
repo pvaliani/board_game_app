@@ -4,3 +4,8 @@
     grid-template-areas: "player-stats score-counter";
     grid-auto-columns: 1fr 1fr;
 }
+
+
+.score-name {
+    text-transform: capitalize;
+}
