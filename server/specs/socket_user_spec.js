@@ -3,7 +3,7 @@ const User = require('../models/socket.io/user.js');
 
 describe('User', function () {
     beforeEach(function () {
-        user = new User('ChrisP', 3, 0, '1135813');
+        user = new User('ChrisP', 3, 0, '11235813');
     });
 
     it('should have a name', function() {
@@ -17,6 +17,9 @@ describe('User', function () {
     it('should have losses', function() {
         assert.strictEqual(user.losses, 0);
     });
-    it('should have an ID');
+
+    it('should have an ID', function() {
+        assert.strictEqual(user.id, '11235813');
+    });
 
 });
