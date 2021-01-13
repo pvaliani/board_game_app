@@ -4,6 +4,7 @@ import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs
 import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
+import Square from '../../models/square-model';
 
 let gridInstance;
 const Grid = ({ onSetUserScores, resetState, setResetState }) => {
@@ -17,6 +18,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         console.table(gridInstance.gridState);
     }, []);
 
+
     useEffect(() => { 
         gridInstance.initialiseState();
         setCurrentPlayer('user1');
@@ -28,6 +30,13 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         onSetUserScores({ ...gridInstance.captures });
     }, [resetState])
       
+
+    //Osh - double capture - currently when a piece has moved the active player changes and the selected peice state changes 
+    //I need to stop both - so that after a capture move has occured, IF the selected piece has more legal capturing moves 
+    //the active player and selected piece states do not changes
+    //IF A USERS CAPTURES INCREASES BY 1 THEN ITS STILL THAT PLAYERS TURN
+
+
     const selectMoveHandler = targetSquare => {
         gridInstance.movePiece(targetSquare, selectedPiece);
         
