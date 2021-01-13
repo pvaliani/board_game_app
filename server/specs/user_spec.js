@@ -12,7 +12,10 @@ describe("User", function () {
         assert.strictEqual(user1.userName, "Davy123");
     });
 
-    it('wins should start at zero');
+    it('wins should start at zero', function () {
+        assert.strictEqual(user1.wins, 0);
+    });
+
     it('losses should start at zero');
     
 });
