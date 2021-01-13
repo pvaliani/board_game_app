@@ -7,6 +7,9 @@ import { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
+import BoardSoundWin from '../../sounds/GameWin.mp3';
+import BoardSoundCapture from '../../sounds/CaptureOpponent.mp3';
+
 import { increaseWinOrLosses } from '../../services/user-services';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -23,6 +26,9 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
     const [winner, setWinner] = useState({});
     const [playPieceSound] = useSound(BoardSoundPiece);
     const [playMoveSound] = useSound(BoardSoundMove);
+    const [playWinSound] = useSound(BoardSoundWin);
+    const [playCaptureSound] = useSound(BoardSoundCapture);
+
     const usersObj = useLocation().state;
     const history = useHistory();
     useEffect(() => {
@@ -43,7 +49,6 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
         setCurrentPlayer('user1');
         setResetState('false');
         gridInstance.addUserNames(usersObj['user1'].userName, usersObj['user2'].userName);
-
         onSetUserScores({ ...gridInstance.captures });
 
     }, [resetState])
@@ -65,17 +70,21 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
             usersObj[swapPlayers[currentPlayer]].losses += 1;
             increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
             increaseWinOrLosses(usersObj[swapPlayers[currentPlayer]].userName, 'losses', usersObj[swapPlayers[currentPlayer]].losses);
-
+            playWinSound();
             setPlayerStats({ ...usersObj });
             return setWinner(usersObj[currentPlayer]);
         }
-        if (moveObj.moveType === 'capturing') {
+        if (moveObj.moveType === 'capturing-double') {
             setSelectedPiece(moveObj.targetSquare.piece);
-            playMoveSound();  // Play the board sound after a move is performed
-        } else {
+            playCaptureSound();  // Play the board sound after a move is performed
+        } else if (moveObj.moveType === 'basic'){
             setSelectedPiece('');
             setCurrentPlayer(swapPlayers[currentPlayer]);
             playMoveSound();  // Play the board sound after a move is performed
+        } else { // single capture
+            setSelectedPiece('');
+            setCurrentPlayer(swapPlayers[currentPlayer]);
+            playCaptureSound();  // Play the board sound after a move is performed
         }
     };
 

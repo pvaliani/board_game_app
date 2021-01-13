@@ -44,6 +44,9 @@ class GridClass {
 
         // if it was capturing move, is there another captu. move?
         if (wasCapturingMove && this.gridState[targetSqRow][targetSqColumn].piece.capturingLegalMoves.length) {
+            return { moveType: 'capturing-double', targetSquare: this.gridState[targetSqRow][targetSqColumn] };
+        }
+        if (wasCapturingMove) {
             return { moveType: 'capturing', targetSquare: this.gridState[targetSqRow][targetSqColumn] };
         }
         return { moveType: 'basic', targetSquare: this.gridState[targetSqRow][targetSqColumn] }
