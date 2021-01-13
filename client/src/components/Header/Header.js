@@ -3,7 +3,9 @@ import Title from '../Title/Title';
 import ResetBox from '../ResetBox/ResetBox';
 
 
-const Header = () => {
+
+
+const Header = ({ onSetUsers }) => {
 
     return (
         <section className="header-section">
