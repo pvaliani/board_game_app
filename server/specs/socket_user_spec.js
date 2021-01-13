@@ -14,7 +14,9 @@ describe('User', function () {
         assert.strictEqual(user.wins, 3);
     });
 
-    it('should have losses');
+    it('should have losses', function() {
+        assert.strictEqual(user.losses, 0);
+    });
     it('should have an ID');
 
 });
