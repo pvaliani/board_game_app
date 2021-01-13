@@ -51,6 +51,23 @@ class GridClass {
         }
     }
 
+    createState(grid) {
+        const gridState = this.rows.map(row => {
+            return this.columns.map(column => {
+                // decide if that square (i.e., combination column, row) has a piece
+                if (grid[row][column].piece) {
+                    return new Square({ row, column }, true, grid[row][column].piece.userTitle);
+                } else {
+                    return new Square({ row, column }, false);
+                }
+            });
+        });
+        this.gridState = gridState;
+        // after we have initialised the grid, we set the legal moves
+        // for each and every piece.
+        this.callPieceLegalMoves('basic');
+        this.callPieceLegalMoves('capturing');
+    }
 
     initialiseState() {
         /* 

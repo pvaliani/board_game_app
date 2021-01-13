@@ -18,7 +18,12 @@ MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true })
     })
     .catch(console.error);
 
-const server = app.listen(5000, function () {
+const server = app.listen(5000, function() {
     console.log(`Server's app on port ${this.address().port}`);
 });
+
+require('./repositories/rooms').initRooms();
+require('./repositories/users').initUsers();
+const io = require('./socket.io/socket').init(server);
+require('./socket.io/setting_up_socket')(io);
 

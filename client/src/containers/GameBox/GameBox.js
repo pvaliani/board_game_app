@@ -4,7 +4,7 @@ import CheckerBoard from '../../components/CheckerBoard/CheckerBoard';
 import ScoreBoard from '../../components/ScoreBoard/ScoreBoard';
 import { useState } from 'react';
 
-const GameBox = () => {
+const GameBox = ({ type }) => {
     const [users, setUsers] = useState({});
     const [userScores, setUserScores] = useState({});
     const [resetState, setResetState] = useState("")
@@ -13,7 +13,7 @@ const GameBox = () => {
     return (
         <main className="main-container">
             <Header setResetState={setResetState} onSetUsers={setUsers}/>
-            <CheckerBoard resetState={resetState} setResetState={setResetState} onSetUserScores={setUserScores} />
+            <CheckerBoard resetState={resetState} setResetState={setResetState} type={type} onSetUserScores={setUserScores}/>
             <ScoreBoard userScores={userScores} /> 
         </main>
     );

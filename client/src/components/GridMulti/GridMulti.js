@@ -1,63 +1,73 @@
-import './Grid.css';
+import './GridMulti.css';
 import { squareColor } from '../../utils/squareColor';
 import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs/grid-specs';
 import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
-// import useSound hook and the board sound sample
-import useSound from 'use-sound'; 
-import BoardSoundPiece from '../../sounds/selectpiece.mp3';
-import BoardSoundMove from '../../sounds/move.mp3';
-
-
-
-
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 import { getSocket } from '../../socket.io/socket';
+import { Prompt, useLocation } from 'react-router-dom';
 
-
+// decide functionality for user2 (should it be same component or different one?)
 let gridInstance;
-const Grid = ({ onSetUserScores, resetState, setResetState }) => {
+const changeTurn = {
+    user1: 'user2',
+    user2: 'user1'
+};
+
+const GridMulti = () => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
+    const [socket, setSocket] = useState(getSocket());
+    const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
+    const [room, setRoom] = useState(null);
+    const location = useLocation();
 
     useEffect(() => {
+        window.onbeforeunload = function (e) {
+            e.preventDefault();
+            return "you can not refresh the page";
+        }
+
+        const incomingData = location.state;
         gridInstance = new GridClass(rows, columns);
-        gridInstance.initialiseState();
-        setCurrentPlayer('user1'); // triggers another cycle
-        console.table(gridInstance.gridState);
+        if (incomingData.user === 'user1') {
+            gridInstance.initialiseState();
+            setCurrentPlayer('user1'); // triggers another cycle
+            socket.emit('create-room', { grid: gridInstance.gridState, userName: incomingData.userObj.userName }, room => setRoom(room));
+        } else if (incomingData.user === 'user2') {
+            gridInstance.createState(incomingData.room.grid);
+            setCurrentPlayer(''); // triggers another cycle
+            setRoom(incomingData.room);
+        }
+
+        socket.on('opponent-moved', ({ room, currentPlayer }) => {
+            gridInstance.createState(room.grid);
+            setCurrentPlayer(currentPlayer);
+        });
+
+        socket.on('opponent-left', () => {
+            console.log('socektId', 'GridMulti.js', 'line: ', '44');
+            gridInstance = new GridClass(rows, columns);
+            gridInstance.initialiseState();
+            setCurrentPlayer('user1'); // triggers another cycle
+        });
+
+        return () => {
+            window.onbeforeunload = () => { };
+            socket.emit('i-am-leaving');
+            socket.off('opponent-moved');
+            socket.off('opponent-left');
+        };
     }, []);
 
-    useEffect(() => { 
-        gridInstance.initialiseState();
-        setCurrentPlayer('user1');
-        setResetState('false');
-        gridInstance.captures = {
-            user1: 0,
-            user2: 0
-        };
-        onSetUserScores({ ...gridInstance.captures });
-    }, [resetState])
-      
-    const [playPieceSound] = useSound(BoardSoundPiece);
-    const [playMoveSound] = useSound(BoardSoundMove);
-
     const selectMoveHandler = targetSquare => {
-
-       
-        playMoveSound();  // Play the board sound after a move is performed
-
-       
-
         gridInstance.movePiece(targetSquare, selectedPiece);
-        
-        onSetUserScores({ ...gridInstance.captures });
-        if (currentPlayer === 'user1') {
-            setCurrentPlayer('user2'); // triggers another cycle
-        } else {
-            setCurrentPlayer('user1'); // triggers another cycle
-        }
+        room.grid = gridInstance.gridState;
+        socket.emit('i-moved', { currentPlayer: changeTurn[currentPlayer], room: room });
+        setCurrentPlayer(''); // triggers another cycle
         setSelectedPiece('');
     };
+
 
     const selectPieceHandler = piece => {
         /* 
@@ -66,11 +76,6 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
             is already selected (the following if statement)
             then we de-select it, otherwise, we select it.
         */
-
-        
-        playPieceSound(); // Play the board sound when selecting a piece
-
-
         if (piece === selectedPiece) {
             return setSelectedPiece('');
         }
@@ -123,12 +128,17 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
             </div>)
     });
 
-
     return (
-        <div className="grid" style={gridStyle}>
-            {gridJSX}
-        </div>
+        <>
+            <div className="grid" style={gridStyle}>
+                {gridJSX}
+            </div>
+            <Prompt
+                when={shouldBlockNavigation}
+                message='If you leave the game will be cancelled, you sure you wanna leave?'
+            />
+        </>
     );
 };
 
-export default Grid;
+export default GridMulti;

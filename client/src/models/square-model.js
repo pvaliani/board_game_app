@@ -1,11 +1,10 @@
-import { squareStyle } from "../gridSpecs/grid-specs";
 
 class Square {
-    constructor(location, hasPiece) {
+    constructor(location, hasPiece, userTitle) {
         this.location = location; // object of coordinates
         this.piece = hasPiece && {
             location: this.location,
-            userTitle: this.pieceBelongsToUser(), // 'user1' or 'user2'
+            userTitle: userTitle || this.pieceBelongsToUser(), // 'user1' or 'user2'
             capturingLegalMoves: [],
             basicLegalMoves: [],
             legalMoves: []
