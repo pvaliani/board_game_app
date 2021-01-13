@@ -1,3 +1,5 @@
+//use function result not url
+
 import './Banner.css';
 
 class Banner extends HTMLElement {
