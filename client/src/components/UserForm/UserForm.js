@@ -5,7 +5,7 @@ import { verifyUser } from '../../services/user-services';
 import { useHistory } from 'react-router-dom';
 
 
-const UserForm = () => {
+const UserForm = ({ playerTwoCb }) => {
     const [user, setUser] = useState('');
     const history = useHistory();
     const nameHandler = e => {
@@ -13,12 +13,14 @@ const UserForm = () => {
     };
 
     const onButtonPress = () => {
-        verifyUser(user)
-            .then(backEndUser => {
-                history.push('/welcome', backEndUser);
-            })
-            .catch(console.error);
-        
+            return verifyUser(user)
+                .then(backEndUser => {
+                    if (playerTwoCb) {
+                        return playerTwoCb(backEndUser);
+                    }
+                    history.push('/welcome', backEndUser);
+                })
+                .catch(console.error);
     }
 
 

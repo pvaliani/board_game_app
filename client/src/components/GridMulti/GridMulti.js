@@ -5,7 +5,7 @@ import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 import { getSocket } from '../../socket.io/socket';
-import { useLocation } from 'react-router-dom';
+import { Prompt, useLocation } from 'react-router-dom';
 
 // decide functionality for user2 (should it be same component or different one?)
 let gridInstance;
@@ -18,11 +18,16 @@ const GridMulti = () => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
     const [socket, setSocket] = useState(getSocket());
+    const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
     const [room, setRoom] = useState(null);
-
     const location = useLocation();
 
     useEffect(() => {
+        window.onbeforeunload = function (e) {
+            e.preventDefault();
+            return "you can not refresh the page";
+        }
+
         const incomingData = location.state;
         gridInstance = new GridClass(rows, columns);
         if (incomingData.user === 'user1') {
@@ -45,11 +50,11 @@ const GridMulti = () => {
             gridInstance = new GridClass(rows, columns);
             gridInstance.initialiseState();
             setCurrentPlayer('user1'); // triggers another cycle
-            // socket.emit('create-room', { grid: gridInstance.gridState, userName: incomingData.userObj.userName }, room => setRoom(room));
         });
 
         return () => {
-            socket.emit('disconnecting-client');
+            window.onbeforeunload = () => { };
+            socket.emit('i-am-leaving');
             socket.off('opponent-moved');
             socket.off('opponent-left');
         };
@@ -123,11 +128,16 @@ const GridMulti = () => {
             </div>)
     });
 
-
     return (
-        <div className="grid" style={gridStyle}>
-            {gridJSX}
-        </div>
+        <>
+            <div className="grid" style={gridStyle}>
+                {gridJSX}
+            </div>
+            <Prompt
+                when={shouldBlockNavigation}
+                message='If you leave the game will be cancelled, you sure you wanna leave?'
+            />
+        </>
     );
 };
 

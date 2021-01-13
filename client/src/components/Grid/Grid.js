@@ -16,8 +16,6 @@ const Grid = () => {
         gridInstance.initialiseState();
         setCurrentPlayer('user1'); // triggers another cycle
         console.table(gridInstance.gridState);
-        const socket = getSocket();
-        socket.emit('create-room', { grid: gridInstance.gridState, userName: 'user1' });
     }, []);
 
     const selectMoveHandler = targetSquare => {

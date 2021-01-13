@@ -11,6 +11,7 @@ class Room {
         }
     }
 
+
     hasUserWithId(id) {
         return this.users.some(user => user.id === id);
     }
