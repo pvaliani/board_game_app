@@ -1,7 +1,5 @@
 const assert = require('assert');
 const User = require('../models/user/user.js');
-const user = require("../models/user/user.js")
-
 
 describe("User", function () {
     beforeEach(function () {
