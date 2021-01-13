@@ -25,7 +25,7 @@ export const increaseWinOrLosses = (userName, type, updatedScore) => {
         of the user.
     */
     return fetch(baseURL + userName, { 
-        method: 'POST',
+        method: 'PATCH',
         body: JSON.stringify({ [type]:  updatedScore}),
         headers: {
             "Content-Type": "application/json"

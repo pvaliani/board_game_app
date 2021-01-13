@@ -2,12 +2,12 @@ import './ScoreBoard.css';
 import ScoreCounter from '../ScoreCounter/ScoreCounter';
 import PlayerStats from '../PlayerStats/PlayerStats';
 
-const ScoreBoard = ({ userScores }) => {
+const ScoreBoard = ({ userScores, playerStats }) => {
 
     return (
         <section className="score-board-section">
             <ScoreCounter userScores={userScores} />
-            <PlayerStats />
+            <PlayerStats playerStats={playerStats}/>
         </section>
     );
 };

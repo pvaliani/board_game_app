@@ -7,29 +7,35 @@ import { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
-import { increaseWinOrLosses } from '../../services/user-services';
+import { increaseWinOrLosses, verifyUser } from '../../services/user-services';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 
 const swapPlayers = {
     user1: 'user2',
     user2: 'user1'
 };
 let gridInstance;
-const Grid = ({ onSetUserScores, resetState, setResetState }) => {
+
+const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
     const [winner, setWinner] = useState({});
     const [playPieceSound] = useSound(BoardSoundPiece);
     const [playMoveSound] = useSound(BoardSoundMove);
-    const [playerStats, setPlayerStats] = useState();
     const usersObj = useLocation().state;
-
+    const history = useHistory();
     useEffect(() => {
+        window.onbeforeunload = (e) => {
+            history.push('/play-locally', usersObj);
+            };
         gridInstance = new GridClass(rows, columns);
         gridInstance.initialiseState();
         gridInstance.addUserNames(usersObj['user1'].userName, usersObj['user2'].userName);
         setCurrentPlayer('user1'); // triggers another cycle
+        console.log(usersObj, 'Grid.js', 'line: ', '33');
+        setPlayerStats({ ...usersObj });
+            return () => window.onbeforeunload = {};
     }, []);
 
     useEffect(() => {
@@ -53,13 +59,14 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         gridInstance.movePiece(targetSquare, selectedPiece);
         onSetUserScores({ ...gridInstance.captures });
         setSelectedPiece('');
+        increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
+        if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
+            usersObj[currentPlayer].wins += 1;
+            usersObj[swapPlayers[currentPlayer]].losses += 1;
+            increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
+            increaseWinOrLosses(usersObj[swapPlayers[currentPlayer]].userName, 'losses', usersObj[swapPlayers[currentPlayer]].losses);
 
-        if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
-            // TODO: increment back end
-            increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins + 1);
-            increaseWinOrLosses(usersObj[swapPlayers[currentPlayer]].userName, 'losses', usersObj[currentPlayer].losses + 1);
-
-            // front end increase
+            setPlayerStats({ ...usersObj });
             return setWinner(usersObj[currentPlayer]);
         }
         setCurrentPlayer(swapPlayers[currentPlayer]);
