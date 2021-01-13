@@ -4,21 +4,21 @@ import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs
 import GridClass from '../../models/grid-model';
 import { useEffect, useState } from 'react';
 // import useSound hook and the board sound sample
-import useSound from 'use-sound'; 
+import useSound from 'use-sound';
 import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
 
-
-
-
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
-import { getSocket } from '../../socket.io/socket';
 
-
+const swapPlayers = {
+    user1: 'user2',
+    user2: 'user1'
+};
 let gridInstance;
 const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
+    const [matchFinished, setMatchFinished] = useState(false);
 
     useEffect(() => {
         gridInstance = new GridClass(rows, columns);
@@ -27,7 +27,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         console.table(gridInstance.gridState);
     }, []);
 
-    useEffect(() => { 
+    useEffect(() => {
         gridInstance.initialiseState();
         setCurrentPlayer('user1');
         setResetState('false');
@@ -37,25 +37,24 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         };
         onSetUserScores({ ...gridInstance.captures });
     }, [resetState])
-      
+
     const [playPieceSound] = useSound(BoardSoundPiece);
     const [playMoveSound] = useSound(BoardSoundMove);
-
+    const playAgainHandler = () => {
+        () => setResetState('true')
+    };
+    
     const selectMoveHandler = targetSquare => {
-
-       
         playMoveSound();  // Play the board sound after a move is performed
 
-       
-
         gridInstance.movePiece(targetSquare, selectedPiece);
-        
         onSetUserScores({ ...gridInstance.captures });
-        if (currentPlayer === 'user1') {
-            setCurrentPlayer('user2'); // triggers another cycle
-        } else {
-            setCurrentPlayer('user1'); // triggers another cycle
+        setCurrentPlayer(swapPlayers[currentPlayer]);
+
+        if (gridInstance.captures.user1 === 12 || gridInstance.captures.user2 === 12) {
+            setMatchFinished(true);
         }
+
         setSelectedPiece('');
     };
 
@@ -67,7 +66,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
             then we de-select it, otherwise, we select it.
         */
 
-        
+
         playPieceSound(); // Play the board sound when selecting a piece
 
 
@@ -127,6 +126,12 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     return (
         <div className="grid" style={gridStyle}>
             {gridJSX}
+            {true && <div className="winner-announcement">
+                🥳Winner is user 1🥳 
+                <div className="play-again-btn" onClick={playAgainHandler}>
+                    Play again!
+                </div>
+            </div>}
         </div>
     );
 };
