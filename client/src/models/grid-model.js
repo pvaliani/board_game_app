@@ -6,15 +6,15 @@ class GridClass {
         this.rows = rows;
         this.gridState = null;
         this.captures = {
-            user1: {score: 0, userName: ''},
-            user2: {score: 0, userName: ''}
+            user1: { score: 0, userName: '' },
+            user2: { score: 0, userName: '' }
         };
     }
 
     addUserNames(user1, user2) {
         this.captures = {
-            user1: {score: 0, userName: user1},
-            user2: {score: 0, userName: user2}
+            user1: { score: 0, userName: user1 },
+            user2: { score: 0, userName: user2 }
         };
     }
 
@@ -24,6 +24,9 @@ class GridClass {
         const targetSqRow = targetSquare.location.row;
         const selectedPieceColumn = selectedPiece.location.column;
         const selectedPieceRow = selectedPiece.location.row;
+
+        // was capturing move?
+        const wasCapturingMove = Math.abs(targetSqColumn - selectedPieceColumn) === 2 && Math.abs(targetSqRow - selectedPieceRow) === 2;
 
         // deciding if we did a capturing move
         this.shouldCapturePiece(targetSquare, selectedPiece);
@@ -35,8 +38,15 @@ class GridClass {
 
         // removing selected piece from initial location
         this.gridState[selectedPieceRow][selectedPieceColumn].piece = false;
+
         this.callPieceLegalMoves('basic');
         this.callPieceLegalMoves('capturing');
+
+        // if it was capturing move, is there another captu. move?
+        if (wasCapturingMove && this.gridState[targetSqRow][targetSqColumn].piece.capturingLegalMoves.length) {
+            return { moveType: 'capturing', targetSquare: this.gridState[targetSqRow][targetSqColumn] };
+        }
+        return { moveType: 'basic', targetSquare: this.gridState[targetSqRow][targetSqColumn] }
     }
 
     shouldCapturePiece(targetSquare, selectedPiece) {

@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import useSound from 'use-sound';
 import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
-import { increaseWinOrLosses, verifyUser } from '../../services/user-services';
+import { increaseWinOrLosses } from '../../services/user-services';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
 import { useLocation, useHistory } from 'react-router-dom';
 
@@ -54,13 +54,13 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
     };
 
     const selectMoveHandler = targetSquare => {
-        playMoveSound();  // Play the board sound after a move is performed
 
-        gridInstance.movePiece(targetSquare, selectedPiece);
+        const moveObj = gridInstance.movePiece(targetSquare, selectedPiece);
+       
+
         onSetUserScores({ ...gridInstance.captures });
-        setSelectedPiece('');
         increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
-        if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
+        if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
             usersObj[currentPlayer].wins += 1;
             usersObj[swapPlayers[currentPlayer]].losses += 1;
             increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
@@ -69,7 +69,14 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
             setPlayerStats({ ...usersObj });
             return setWinner(usersObj[currentPlayer]);
         }
-        setCurrentPlayer(swapPlayers[currentPlayer]);
+        if (moveObj.moveType === 'capturing') {
+            setSelectedPiece(moveObj.targetSquare.piece);
+            playMoveSound();  // Play the board sound after a move is performed
+        } else {
+            setSelectedPiece('');
+            setCurrentPlayer(swapPlayers[currentPlayer]);
+            playMoveSound();  // Play the board sound after a move is performed
+        }
     };
 
     const selectPieceHandler = piece => {
