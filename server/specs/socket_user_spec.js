@@ -9,7 +9,11 @@ describe('User', function () {
     it('should have a name', function() {
         assert.strictEqual(user.userName, 'ChrisP');
     });
-    it('should have wins');
+
+    it('should have wins', function() {
+        assert.strictEqual(user.wins, 3);
+    });
+
     it('should have losses');
     it('should have an ID');
 
