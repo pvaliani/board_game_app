@@ -9,6 +9,7 @@ import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
 
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
+import { useLocation } from 'react-router-dom';
 
 const swapPlayers = {
     user1: 'user2',
@@ -18,13 +19,15 @@ let gridInstance;
 const Grid = ({ onSetUserScores, resetState, setResetState }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
-    const [matchFinished, setMatchFinished] = useState(false);
+    const [winner, setWinner] = useState({});
+    const [playPieceSound] = useSound(BoardSoundPiece);
+    const [playMoveSound] = useSound(BoardSoundMove);
+    const usersObj = useLocation().state;
 
     useEffect(() => {
         gridInstance = new GridClass(rows, columns);
         gridInstance.initialiseState();
         setCurrentPlayer('user1'); // triggers another cycle
-        console.table(gridInstance.gridState);
     }, []);
 
     useEffect(() => {
@@ -38,24 +41,24 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
         onSetUserScores({ ...gridInstance.captures });
     }, [resetState])
 
-    const [playPieceSound] = useSound(BoardSoundPiece);
-    const [playMoveSound] = useSound(BoardSoundMove);
-    const playAgainHandler = () => {
-        () => setResetState('true')
-    };
     
+
+    const playAgainHandler = () => {
+        setWinner(usersObj[currentPlayer]);
+        setResetState('true');
+    };
+
     const selectMoveHandler = targetSquare => {
         playMoveSound();  // Play the board sound after a move is performed
 
         gridInstance.movePiece(targetSquare, selectedPiece);
         onSetUserScores({ ...gridInstance.captures });
-        setCurrentPlayer(swapPlayers[currentPlayer]);
+        setSelectedPiece('');
 
         if (gridInstance.captures.user1 === 12 || gridInstance.captures.user2 === 12) {
-            setMatchFinished(true);
+            return setWinner(usersObj[currentPlayer]);
         }
-
-        setSelectedPiece('');
+        setCurrentPlayer(swapPlayers[currentPlayer]);
     };
 
     const selectPieceHandler = piece => {
@@ -125,13 +128,15 @@ const Grid = ({ onSetUserScores, resetState, setResetState }) => {
 
     return (
         <div className="grid" style={gridStyle}>
+            <p className="user1-name">{usersObj['user1'].userName}</p>
             {gridJSX}
-            {true && <div className="winner-announcement">
-                🥳Winner is user 1🥳 
+            {!!Object.keys(winner).length && <div className="winner-announcement">
+                🥳 Winner is {winner.userName} 🥳 
                 <div className="play-again-btn" onClick={playAgainHandler}>
                     Play again!
                 </div>
             </div>}
+            <p className="user2-name">{usersObj['user2'].userName}</p>
         </div>
     );
 };

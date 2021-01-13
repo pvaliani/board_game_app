@@ -4,7 +4,7 @@ import ResetBox from '../ResetBox/ResetBox';
 
 
 
-const Header = ({ onSetUsers, setResetState }) => {
+const Header = ({ setResetState }) => {
 
     return (
         <section className="header-section">
