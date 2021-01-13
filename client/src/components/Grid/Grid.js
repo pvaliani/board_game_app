@@ -9,6 +9,7 @@ import BoardSoundPiece from '../../sounds/selectpiece.mp3';
 import BoardSoundMove from '../../sounds/move.mp3';
 import BoardSoundWin from '../../sounds/GameWin.mp3';
 import BoardSoundCapture from '../../sounds/CaptureOpponent.mp3';
+import BoardSoundMultiCapture from '../../sounds/GunSingleCapture.mp3';
 
 import { increaseWinOrLosses } from '../../services/user-services';
 import { pieceAsJSX } from '../../utils/pieceAsJSX';
@@ -28,6 +29,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
     const [playMoveSound] = useSound(BoardSoundMove);
     const [playWinSound] = useSound(BoardSoundWin);
     const [playCaptureSound] = useSound(BoardSoundCapture);
+    const [playMultiCaptureSound] = useSound(BoardSoundMultiCapture);
 
     const usersObj = useLocation().state;
     const history = useHistory();
@@ -76,7 +78,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
         }
         if (moveObj.moveType === 'capturing-double') {
             setSelectedPiece(moveObj.targetSquare.piece);
-            playCaptureSound();  // Play the board sound after a move is performed
+            playMultiCaptureSound();  // Play the board sound after a move is performed
         } else if (moveObj.moveType === 'basic'){
             setSelectedPiece('');
             setCurrentPlayer(swapPlayers[currentPlayer]);
