@@ -35,7 +35,7 @@ const UserForm = ({ playerTwoCb }) => {
                     onChange={nameHandler}
                     required
                 />
-                <Button title="Confirm" onSubmit={onButtonPress} />
+                <Button title="Play!" onSubmit={onButtonPress} />
             </div>
         </div>
     );

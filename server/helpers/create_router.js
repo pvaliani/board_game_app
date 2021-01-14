@@ -3,7 +3,7 @@ const User = require('../models/user/user');
 
 const createRouter = collection => {
     const router = express.Router();
-    
+
     // get everything
     router.get('/', (req, res) => {
         collection.find().toArray()
@@ -12,6 +12,7 @@ const createRouter = collection => {
             })
             .catch(console.error);
     });
+
 
     // create user router
     router.post('/verify-user', (req, res) => {

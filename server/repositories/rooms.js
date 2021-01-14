@@ -31,6 +31,7 @@ class RoomsClass {
     removeLeaverFromRoom(socektId, roomName) {
             const room = this.getRoomByName(roomName);
             room && room.removeUserById(socektId);
+            return room;
     }
 }
 

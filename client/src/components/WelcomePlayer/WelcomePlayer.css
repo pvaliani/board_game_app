@@ -1,0 +1,37 @@
+.welcome-container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-auto-flow: column;
+    justify-content: center;
+    align-content: center;
+}
+
+.welcome-user-name {
+    text-align: center;
+}
+.wecome-div-user2 {
+    align-self: center;
+}
+
+.trophy-icon {
+    font-size: 150px;
+    display: block;
+}
+.VS { 
+    font-size: 100px;
+    align-self: center;
+    margin: 0 20px;
+}
+.trophies {
+    display: grid;
+    grid-template-areas: 
+    "wins losses"
+    "scorew scorel";
+}
+
+.user-score-welcome {
+    justify-self: center;
+    font-size: 60px;
+    font-weight: 600;
+}
