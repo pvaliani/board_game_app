@@ -14,7 +14,7 @@ MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true })
         const usersCollection = db.collection('users');
         const usersRoute = createRouter(usersCollection);
         app.use('/api/users', usersRoute);
-        const server = app.listen(5000, function() {
+        const server = app.listen(process.env.PORT || 5000, function() {
             console.log(`Server's app on port ${this.address().port}`);
         });
         
