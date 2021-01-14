@@ -20,7 +20,7 @@ const swapPlayers = {
     user1: 'user2',
     user2: 'user1'
 };
-
+let ROOM_NAME;
 const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
@@ -34,6 +34,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
     const [playWinSound] = useSound(BoardSoundWin);
     const [playCaptureSound] = useSound(BoardSoundCapture);
     const [playMultiCaptureSound] = useSound(BoardSoundMultiCapture);
+    const [readyToPlay, setReadyToPlay] = useState(false);
 
     useEffect(() => {
         setShouldBlockNavigation(true);
@@ -47,11 +48,17 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
             // setPlayerStats({ user1: incomingData.userObj, user2: '' });
             gridInstance.initialiseState();
             setCurrentPlayer('user1'); // triggers another cycle
-            socket.emit('create-room', { grid: gridInstance.gridState, userObj: incomingData.userObj }, room => setRoom(room));
+            socket.emit('send-initial-grid', { grid: gridInstance.gridState, roomName: incomingData.room.name }, room => {
+                ROOM_NAME = room.name;
+                setRoom(room);
+            });
         } else if (incomingData.user === 'user2') {
+            setReadyToPlay(true);
             gridInstance.createState(incomingData.room.grid);
             setCurrentPlayer(''); // triggers another cycle
+            ROOM_NAME = incomingData.room.name;
             setRoom(incomingData.room);
+            console.log(incomingData.room, 'GridMulti.js', 'line: ', '55');
             setPlayerStats({ user1: incomingData.room.users[0], user2: incomingData.room.users[1] });
             gridInstance.addUserNames(incomingData.room.users[1].userName, incomingData.room.users[0].userName);
             onSetUserScores({ ...gridInstance.captures });
@@ -62,6 +69,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
             setPlayerStats({ user1: room.users[0], user2: room.users[1] });
             gridInstance.addUserNames(room.users[1].userName, room.users[0].userName);
             onSetUserScores({ ...gridInstance.captures });
+            setReadyToPlay(true);
         });
 
         socket.on('opponent-moved', ({ room, currentPlayer }) => {
@@ -87,14 +95,16 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
         });
 
         socket.on('opponent-left', () => {
+            setReadyToPlay(false);
             gridInstance = new GridClass(rows, columns);
             gridInstance.initialiseState();
             setCurrentPlayer('user1'); // triggers another cycle
         });
 
         return () => {
+            setReadyToPlay(false);
             window.onbeforeunload = () => { };
-            socket.emit('i-am-leaving');
+            socket.emit('i-am-leaving', ROOM_NAME);
             socket.off('play-again');
             socket.off('someone-left');
             socket.off('opponent-moved');
@@ -104,6 +114,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
     }, []);
 
     const selectMoveHandler = targetSquare => {
+        playPieceSound();
         const usersObj = { user1: room.users[0], user2: room.users[1] };
         const moveObj = gridInstance.movePiece(targetSquare, selectedPiece);
         onSetUserScores({ ...gridInstance.captures });
@@ -151,9 +162,9 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
     };
 
     useEffect(() => {
-            gridInstance.initialiseState();
-            setResetState('false');
-            onSetUserScores({ ...gridInstance.captures });
+        gridInstance.initialiseState();
+        setResetState('false');
+        onSetUserScores({ ...gridInstance.captures });
 
     }, [resetState]);
 
@@ -213,25 +224,30 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
             </div>)
     });
 
-    return (
-        <>
-            <div className="grid" style={gridStyle}>
-                {room && <p className="user1-name">{room.users[0].userName}</p>}
-                {gridJSX}
-                {!!Object.keys(winner).length && <div className="winner-announcement">
-                    🥳 Winner is {winner.userName} 🥳
-                <div className="play-again-btn" onClick={playAgainHandler}>
-                        Play again!
+    let JSX = <div>Wait another player</div>;
+    if (readyToPlay) {
+        JSX = (
+            <>
+                <div className="grid" style={gridStyle}>
+                    {room && <p className="user1-name">{room.users[0].userName}</p>}
+                    {gridJSX}
+                    {!!Object.keys(winner).length && <div className="winner-announcement">
+                        🥳 Winner is {winner.userName} 🥳
+                        <div className="play-again-btn" onClick={playAgainHandler}>
+                            Play again!
+                    </div>
+                    </div>}
+                    {(room && room.users.length === 2) && <p className="user2-name">{room.users[1].userName}</p>}
                 </div>
-                </div>}
-                {(room && room.users.length === 2) && <p className="user2-name">{room.users[1].userName}</p>}
-            </div>
-            <Prompt
-                when={shouldBlockNavigation}
-                message='If you leave the game will be cancelled, you sure you wanna leave?'
-            />
-        </>
-    );
+                <Prompt
+                    when={shouldBlockNavigation}
+                    message='If you leave the game will be cancelled, you sure you wanna leave?'
+                />
+            </>
+        );
+    }
+
+    return (JSX);
 };
 
 export default GridMulti;

@@ -8,22 +8,21 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-
 MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true })
     .then(client => {
         const db = client.db('board_game');
         const usersCollection = db.collection('users');
         const usersRoute = createRouter(usersCollection);
         app.use('/api/users', usersRoute);
+        const server = app.listen(5000, function() {
+            console.log(`Server's app on port ${this.address().port}`);
+        });
+        
+        require('./repositories/rooms').initRooms();
+        require('./repositories/users').initUsers();
+        const io = require('./socket.io/socket').init(server);
+        require('./socket.io/setting_up_socket')(io, usersCollection);
     })
     .catch(console.error);
 
-const server = app.listen(5000, function() {
-    console.log(`Server's app on port ${this.address().port}`);
-});
-
-require('./repositories/rooms').initRooms();
-require('./repositories/users').initUsers();
-const io = require('./socket.io/socket').init(server);
-require('./socket.io/setting_up_socket')(io);
 

@@ -18,7 +18,10 @@ const MultiRemote = () => {
         });
         socket.emit('looking-for-room');
 
-        return () => socket.off('rooms-list');
+        return () => {
+            socket.off('joined-room');
+            socket.off('rooms-list');
+        } 
     }, []);
 
     // joining room user 2
@@ -27,8 +30,6 @@ const MultiRemote = () => {
         const userName = location.state.userName;
         socket.emit('join-room', { userObj, roomName });
         socket.on('joined-room', room => {
-            room.users[0].wins = location.state.wins;
-            room.users[0].losses = location.state.losses;
             socket.emit('room-clean-up');
             history.push('/play-remotely', { user: 'user2', room: room, userName: userName, userObj: userObj });
         });
@@ -37,8 +38,9 @@ const MultiRemote = () => {
     // creating room user 1
     const createGameHandler = () => {
         const user = location.state;
-        console.log(user, 'MultiRemote.js', 'line: ', '40'); // has wins and losses
-        history.push('/play-remotely', { user: 'user1', userObj: user });
+        socket.emit('create-room', { userObj: user }, room => {
+            history.push('/play-remotely', { user: 'user1', userObj: user, room: room });
+        });
     };
 
     const roomsJSX = rooms.map(room => {
