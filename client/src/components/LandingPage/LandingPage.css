@@ -4,6 +4,8 @@
     display: grid;
     grid-template-columns: 1fr minmax(400px, 1fr) 1fr;
     grid-template-areas: ". table .";
+    background-color: #b2edfcff;
+
 }
 
 .scores-table-container {

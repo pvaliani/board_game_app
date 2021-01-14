@@ -27,7 +27,7 @@ const WelcomePlayer = () => {
     if (twoPlayers) {
         buttonsForOneJSX = null;
         buttonsForTwoJSX = (
-            <div className="wecome-div-user2">
+            <div className="welcome-div-user2">
                 <p>Enter name of player two: </p>
                 <UserForm playerTwoCb={playerTwoCb} />
                 <Button title="Multiplayer (remotely)" onSubmit={() => history.push('/multi-remote', location.state)} />

@@ -36,14 +36,14 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
     useEffect(() => {
         window.onbeforeunload = (e) => {
             history.push('/play-locally', usersObj);
-            };
+        };
 
         gridInstance = new GridClass(rows, columns);
         gridInstance.initialiseState();
         gridInstance.addUserNames(usersObj['user1'].userName, usersObj['user2'].userName);
         setCurrentPlayer('user1'); // triggers another cycle
         setPlayerStats({ ...usersObj });
-            return () => window.onbeforeunload = {};
+        return () => window.onbeforeunload = {};
     }, []);
 
     useEffect(() => {
@@ -63,7 +63,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
     const selectMoveHandler = targetSquare => {
 
         const moveObj = gridInstance.movePiece(targetSquare, selectedPiece);
-       
+
 
         onSetUserScores({ ...gridInstance.captures });
         if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
@@ -78,7 +78,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
         if (moveObj.moveType === 'capturing-double') {
             setSelectedPiece(moveObj.targetSquare.piece);
             playMultiCaptureSound();  // Play the board sound after a move is performed
-        } else if (moveObj.moveType === 'basic'){
+        } else if (moveObj.moveType === 'basic') {
             setSelectedPiece('');
             setCurrentPlayer(swapPlayers[currentPlayer]);
             playMoveSound();  // Play the board sound after a move is performed
@@ -156,7 +156,10 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
 
     return (
         <div className="grid" style={gridStyle}>
-            <p className="user1-name">{usersObj['user1'].userName}</p>
+            <div className="user1-name">
+                <p >{usersObj['user1'].userName}</p>
+                <span className="turn-icon-user1" style={{color: currentPlayer !== 'user1' && '#b2edfcff'}}>˿</span>
+            </div>
             {gridJSX}
             {!!Object.keys(winner).length && <div className="winner-announcement">
                 🥳 Winner is {winner.userName} 🥳
@@ -164,7 +167,10 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
                     Play again!
                 </div>
             </div>}
-            <p className="user2-name">{usersObj['user2'].userName}</p>
+            <div className="user2-name">
+                <p >{usersObj['user2'].userName}</p>
+                <span className="turn-icon-user2" style={{color: currentPlayer !== 'user2' && '#b2edfcff'}}>˿</span>
+            </div>
         </div>
     );
 };

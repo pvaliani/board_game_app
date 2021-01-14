@@ -1,10 +1,11 @@
 import './Title.css';
+import logo from '../../static/img/CheckersLogo.png';
 
 const Title = () => {
 
     return (
         <div className="game-title"> 
-            <h1>Game Name</h1>
+            <img className="logo-png" src={logo} />
         </div>
     );
 };

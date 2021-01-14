@@ -1,3 +1,10 @@
 .score-counter {
     grid-area: score-counter;
+    justify-self: end;
+    border-radius: 10px;
+    border: 1px solid rgba(149, 186, 212);
+    align-self: start;
+    padding: 10px 5px;
+    box-shadow: 0 5px 5px 5px rgba(149, 186, 212, .5);
 }
+

@@ -8,7 +8,6 @@ const Header = ({ type, setResetState }) => {
 
     return (
         <section className="header-section">
-            <Title />
             {type === 'locally' && <ResetBox setResetState={setResetState} />}
         </section>
     );

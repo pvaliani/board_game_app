@@ -1,3 +1,7 @@
 .game-title {
-    grid-area: game-title;
+    grid-area: title;
+}
+
+.logo-png {
+    width: 200px;
 }

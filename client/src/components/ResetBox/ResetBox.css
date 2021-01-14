@@ -1,3 +1,10 @@
 .reset-box {
     grid-area: reset-box;
+    justify-self: end;
+    align-self: end;
+    padding-bottom: 10px;
+}
+
+.logo-reset {
+    width: 50px;
 }

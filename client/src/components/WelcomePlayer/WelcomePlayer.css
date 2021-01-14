@@ -5,12 +5,13 @@
     grid-auto-flow: column;
     justify-content: center;
     align-content: center;
+    background-color: #b2edfcff;
 }
 
 .welcome-user-name {
     text-align: center;
 }
-.wecome-div-user2 {
+.welcome-div-user2 {
     align-self: center;
 }
 

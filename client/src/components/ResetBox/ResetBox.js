@@ -1,4 +1,4 @@
-import Button from '../Button/Button';
+import resetLogo from '../../static/img/CheckersHeader.png';
 import './ResetBox.css';
 
 const ResetBox = ({setResetState}) => {
@@ -11,7 +11,8 @@ const ResetBox = ({setResetState}) => {
 
     return (
         <div className="reset-box">
-            <Button onSubmit={resetStateHandler} title="Reset"/>
+            <img className="logo-reset" src={resetLogo} onSubmit={resetStateHandler}/>
+            <div>Reset Game</div>
         </div>
     );
 };

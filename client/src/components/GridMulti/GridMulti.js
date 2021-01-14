@@ -1,4 +1,4 @@
-import './GridMulti.css';
+import '../Grid/Grid.css';
 import { squareColor } from '../../utils/squareColor';
 import { rows, columns, squareStyle, rowStyle, gridStyle } from '../../gridSpecs/grid-specs';
 import GridClass from '../../models/grid-model';
