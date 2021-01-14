@@ -3,6 +3,7 @@ import UserForm from '../UserForm/UserForm';
 import { fetchAll } from '../../services/user-services';
 import { useEffect, useState } from 'react';
 import logo from '../../static/img/CheckersLogo.png';
+import logoReact from '../../static/img/ReactLogoTransparent.png';
 
 const LandingPage = () => {
     const [allUsers, setAllUsers] = useState([]);
@@ -34,9 +35,9 @@ const LandingPage = () => {
         const userScore = user.wins / user.losses === Infinity ? user.wins : user.wins / user.losses || 0;
         return (
             <div key={user.userName} className={`user-row user-row${i % 2}`}>
-                <div className="user-name">{i+1}. {user.userName}</div>
+                <div className="user-name">{i + 1}. {user.userName}</div>
                 <div className="user-score">🏆{user.wins}</div>
-                <div className="user-score"> ☠️{user.losses} </div> 
+                <div className="user-score"> ☠️{user.losses} </div>
                 <div className="score-">Score ({userScore.toFixed(2)})</div>
             </div>
         );
@@ -54,6 +55,7 @@ const LandingPage = () => {
             <div className="player1-form">
                 <UserForm />
             </div>
+            <img className="react-logo" src={logoReact} alt="" />
         </main>
     );
 };

@@ -6,9 +6,16 @@
     grid-template-areas: 
     ". logo ."
     ". user-form ."
-    ". leaderboard .";
+    ". leaderboard ."
+    ". react-logo .";
     background-color: #b2edfcff;
 
+}
+
+.react-logo {
+    grid-area: react-logo;
+    width: 70px;
+    justify-self: center;
 }
 
 .scores-table-container {
@@ -19,7 +26,6 @@
     flex-direction: column;
     justify-content: space-around;
     padding: 0 50px;
-    padding-bottom: 50px;
     text-align: center;
     background-color: #b2edfcff;
     overflow: hidden;
