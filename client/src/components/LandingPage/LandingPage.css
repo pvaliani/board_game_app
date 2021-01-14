@@ -49,6 +49,7 @@
 }
 
 .user-row {
+    cursor: pointer;
     display: grid;
     grid-auto-flow: column;
     grid-template-columns: 100px 80px 80px 180px;

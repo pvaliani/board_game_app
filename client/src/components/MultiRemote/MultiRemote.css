@@ -1,0 +1,21 @@
+.scores-in-remote {
+    display: block;
+    align-items: center;
+}
+
+.OR-remote {
+    font-size: 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+.btn-remote {
+    padding: 15px;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+
+.join-game-remote {
+    font-size: 35px;
+}

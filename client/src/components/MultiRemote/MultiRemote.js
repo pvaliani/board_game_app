@@ -21,7 +21,7 @@ const MultiRemote = () => {
         return () => {
             socket.off('joined-room');
             socket.off('rooms-list');
-        } 
+        }
     }, []);
 
     // joining room user 2
@@ -43,18 +43,33 @@ const MultiRemote = () => {
         });
     };
 
-    const roomsJSX = rooms.map(room => {
-        return <div key={room.name} style={{ cursor: 'pointer' }} onClick={() => joinRoomHandler(room.name)}>{room.users[0].userName}</div>;
-    });
+
+    const roomsJSX = rooms.map((room, i) => {
+        const user = room.users[0];
+        const userScore = user.wins / user.losses === Infinity ? user.wins : user.wins / user.losses || 0;
+        return (
+            <div key={user.userName} className={`user-row user-row${i % 2}`} onClick={() => joinRoomHandler(room.name)}>
+                <div className="user-name">{i + 1}. {user.userName}</div>
+                <div className="user-score">🏆{user.wins}</div>
+                <div> ☠️{user.losses} </div>
+                <div className="score-">Score ({userScore.toFixed(2)})</div>
+            </div>
+        );
+    })
+
 
     return (
-        <div>
-            I am the multi remote
-            <div className="rooms-list">
-                {roomsJSX}
+        <main className="landing-container">
+            <div className="scores-table-container">
+                <Button title="Create Game" onSubmit={createGameHandler} extraClass="btn-remote"/>
+                <div className="OR-remote">OR</div>
+                <h1 className="join-game-remote">Join a Game</h1>
+                <div className="hr"></div>
+                <div className="scores-table">
+                    {roomsJSX}
+                </div>
             </div>
-            <Button title="Create game" onSubmit={createGameHandler} />
-        </div>
+        </main>
     );
 };
 

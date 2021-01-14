@@ -45,7 +45,7 @@ const LandingPage = () => {
     return (
         <main className="landing-container">
             <img src={logo} className="logo-landing" />
-            <div className="scores-table-container">
+            <div className="scores-table-container scores-in-remote">
                 <h1>Leaderboard</h1>
                 <div className="scores-table">
                     {usersJSX}
