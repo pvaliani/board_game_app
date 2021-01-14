@@ -86,7 +86,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: orange;
+    color: white;
     animation: winning-announcement  3s forwards;
     background-image: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7));
     padding: 10px 5px;
@@ -100,7 +100,7 @@
 .play-again-btn {
     text-align: center;
     /* padding: 10px 5px; */
-    background-color: orangered;
+    background-color: rgb(149, 186, 212);
     justify-self: center;
     padding: 10px 20px;
     border-radius: 10px;

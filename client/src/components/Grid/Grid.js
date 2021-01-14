@@ -153,7 +153,6 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
             </div>)
     });
 
-
     return (
         <div className="grid" style={gridStyle}>
             <div className="user1-name">
@@ -162,7 +161,7 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
             </div>
             {gridJSX}
             {!!Object.keys(winner).length && <div className="winner-announcement">
-                🥳 Winner is {winner.userName} 🥳
+                🥳 {winner.userName} Wins! 🥳
                 <div className="play-again-btn" onClick={playAgainHandler}>
                     Play again!
                 </div>
