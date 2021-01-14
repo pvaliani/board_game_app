@@ -2,7 +2,7 @@
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 1fr minmax(540px, 1fr) 1fr;
+    grid-template-columns: 1fr minmax(600px, 1fr) 1fr;
     grid-template-areas: 
     ". logo ."
     ". user-form ."
@@ -52,7 +52,7 @@
     cursor: pointer;
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 100px 80px 80px 180px;
+    grid-template-columns: 1fr 80px 80px 100px;
 }
 
 .user-row0 {
@@ -75,5 +75,9 @@
 
 
 .score- {
-    justify-self: end;
+    justify-self: start;
+}
+
+.user-score {
+    justify-self: start;
 }

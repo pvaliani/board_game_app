@@ -36,7 +36,7 @@ const LandingPage = () => {
             <div key={user.userName} className={`user-row user-row${i % 2}`}>
                 <div className="user-name">{i+1}. {user.userName}</div>
                 <div className="user-score">🏆{user.wins}</div>
-                <div> ☠️{user.losses} </div> 
+                <div className="user-score"> ☠️{user.losses} </div> 
                 <div className="score-">Score ({userScore.toFixed(2)})</div>
             </div>
         );

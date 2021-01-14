@@ -4,22 +4,67 @@ db.dropDatabase();
 db.users.insertMany([  
   {
     userName: 'Ped',
-    wins: 0,
-    losses: 0,
+    wins: 7,
+    losses: 2,
   },
   {
     userName: 'Osh',
-    wins: 0,
-    losses: 0
+    wins: 8,
+    losses: 4
   },
   {
     userName: 'Nargis',
-    wins: 0,
-    losses: 0
+    wins: 9,
+    losses: 3
   },
   {
     userName: 'Nikos',
-    wins: 0,
-    losses: 0
+    wins: 7,
+    losses: 2
+  },
+  {
+    userName: 'CoolDude69',
+    wins: 17,
+    losses: 12
+  },
+  {
+    userName: 'CheckerPublic',
+    wins: 10,
+    losses: 50
+  },
+  {
+    userName: 'NikosCat2',
+    wins: 10,
+    losses: 3
+  },
+  {
+    userName: 'BangsGameTest',
+    wins: 10,
+    losses: 30
+  },
+  {
+    userName: 'NotENiall9',
+    wins: 40,
+    losses: 10
+  },
+  {
+    userName: 'SpeedySky',
+    wins: 30,
+    losses: 5
+  },
+  {
+    userName: 'AnnasDoorBell79',
+    wins: 75,
+    losses: 15
+  },
+  {
+    userName: 'ColDaRiddler',
+    wins: 60,
+    losses: 2
+  },
+  {
+    userName: 'PeteCannaeStand95',
+    wins: 60,
+    losses: 22
   }
 ]);
