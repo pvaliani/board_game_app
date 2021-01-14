@@ -8,8 +8,8 @@ const scoreCounter = ({ userScores }) => {
             <>
                 <div>Current Game Score</div>
                 <hr/>
-                <div className="score-name">{userScores['user1'].userName}: {userScores['user1'].score}</div>
-                <div className="score-name">{userScores['user2'].userName}: {userScores['user2'].score}</div>
+                <div className="score-name">{userScores['user1'].userName}: {userScores['user1'].score} captures</div>
+                <div className="score-name">{userScores['user2'].userName}: {userScores['user2'].score} captures</div>
             </>
         );
     }
