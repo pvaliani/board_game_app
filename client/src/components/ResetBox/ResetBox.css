@@ -7,4 +7,12 @@
 
 .logo-reset {
     width: 50px;
+    cursor: pointer;
+    box-shadow: 2px 2px 1px 1px rgba(0, 0, 0, .5);
+}
+
+.logo-reset:hover {
+    box-shadow: 2px 6px 1px 1px rgba(0, 0, 0, .5);
+
+    transform: translateY(-2px);
 }

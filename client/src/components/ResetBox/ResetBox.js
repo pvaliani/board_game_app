@@ -11,7 +11,7 @@ const ResetBox = ({setResetState}) => {
 
     return (
         <div className="reset-box">
-            <img className="logo-reset" src={resetLogo} onSubmit={resetStateHandler}/>
+            <img className="logo-reset" src={resetLogo} onClick={resetStateHandler}/>
             <div>Reset Game</div>
         </div>
     );
