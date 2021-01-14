@@ -34,7 +34,7 @@ const UserForm = ({ playerTwoCb }) => {
                     className="input"
                     type="text"
                     name="user-input"
-                    placeholder="Ready Player One?"
+                    placeholder={`Ready Player ${playerTwoCb ? 'Two' : 'One'}?`}
                     value={user}
                     onChange={nameHandler}
                     required
