@@ -6,34 +6,67 @@ import UserForm from '../UserForm/UserForm';
 
 const WelcomePlayer = () => {
     const [twoPlayers, setTwoPlayers] = useState(false);
+    const [readyToPlay, setReadyToPlay] = useState(false);
     const history = useHistory();
     const location = useLocation();
 
     const playerTwoCb = (backEndUser) => {
-        history.push('/play-locally', {user1: location.state, user2:backEndUser});
+        setReadyToPlay(backEndUser);
+        setTimeout(() => {
+            history.push('/play-locally', { user1: location.state, user2: backEndUser });
+        }, 2000);
     }
 
-    let oneOrTwoJSX = (
+    let buttonsForOneJSX = (
         <>
             <Button title="Multiplayer (locally)" onSubmit={() => setTwoPlayers(true)} />
             <Button title="Multiplayer (remotely)" onSubmit={() => history.push('/multi-remote', location.state)} />
         </>
     );
-
+    let buttonsForTwoJSX;
     if (twoPlayers) {
-        oneOrTwoJSX = (
-            <>
+        buttonsForOneJSX = null;
+        buttonsForTwoJSX = (
+            <div className="wecome-div-user2">
                 <p>Enter name of player two: </p>
-                <UserForm playerTwoCb={playerTwoCb}/>
+                <UserForm playerTwoCb={playerTwoCb} />
                 <Button title="Multiplayer (remotely)" onSubmit={() => history.push('/multi-remote', location.state)} />
-            </>
+            </div>
+        );
+    }
+    let secondPlayerJSX;
+    let VSJSX;
+    if (readyToPlay) {
+        buttonsForTwoJSX = null;
+        VSJSX = <div className="VS">VS</div>;
+        secondPlayerJSX = (
+            <div className="welcome-div-user1">
+                <h1 className="welcome-user-name">{readyToPlay.userName}</h1>
+                <div className="trophies">
+                    <div className="trophy-icon">🏆</div>
+                    <div className="trophy-icon">☠️</div>
+                    <div className="user-score-welcome">{readyToPlay.wins}</div>
+                    <div className="user-score-welcome">{readyToPlay.losses}</div>
+                </div>
+            </div>
         );
     }
 
     return (
-        <div>
-            <div>Welcome {location.state.userName}</div>
-            {oneOrTwoJSX}
+        <div className="welcome-container">
+            <div className="welcome-div-user1">
+                <h1 className="welcome-user-name">{location.state.userName}</h1>
+                <div className="trophies">
+                    <div className="trophy-icon">🏆</div>
+                    <div className="trophy-icon">☠️</div>
+                    <div className="user-score-welcome">{location.state.wins}</div>
+                    <div className="user-score-welcome">{location.state.losses}</div>
+                </div>
+                {buttonsForOneJSX}
+            </div>
+            {VSJSX}
+            {secondPlayerJSX}
+            {buttonsForTwoJSX}
         </div>
     );
 };

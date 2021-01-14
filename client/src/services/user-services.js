@@ -17,6 +17,9 @@ export const verifyUser = (userName) => {
     .catch(console.error);
 };
 
+export const fetchAll = () => {
+    return fetch(baseURL).then(res => res.json());
+};
 
 export const increaseWinOrLosses = (userName, type, updatedScore) => {
     /* 
