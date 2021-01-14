@@ -6,10 +6,16 @@ const scoreCounter = ({ userScores }) => {
     if (userScores['user1']) {
         scoresJSX = (
             <>
-                <div>Current Game Score</div>
-                <hr/>
-                <div className="score-name">{userScores['user1'].userName}: {userScores['user1'].score} captures</div>
-                <div className="score-name">{userScores['user2'].userName}: {userScores['user2'].score} captures</div>
+                <div>Captures</div>
+                <hr />
+                <div className="score-name">
+                    <div>{userScores['user1'].userName}:</div>
+                    <div>{userScores['user1'].score}</div>
+                </div>
+                <div className="score-name">
+                    <div>{userScores['user2'].userName}:</div>
+                    <div>{userScores['user2'].score}</div>
+                </div>
             </>
         );
     }

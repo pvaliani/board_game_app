@@ -6,5 +6,10 @@
     align-self: start;
     padding: 10px 5px;
     box-shadow: 0 5px 5px 5px rgba(149, 186, 212, .5);
+    width: 200px;
 }
 
+.score-name {
+    display: flex;
+    justify-content: space-between;
+}
