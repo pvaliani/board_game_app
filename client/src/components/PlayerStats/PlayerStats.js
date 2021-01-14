@@ -1,6 +1,8 @@
 import './PlayerStats.css';
 
-const playerStats = ({ playerStats }) => {
+const playerStats = ({ playerStats}) => {
+
+
     let playerStatsJSX;
     if (playerStats && Object.keys(playerStats).length) {
         const user1Score = playerStats.user1.wins / playerStats.user1.losses === Infinity ? playerStats.user1.wins : playerStats.user1.wins / playerStats.user1.losses || 0;

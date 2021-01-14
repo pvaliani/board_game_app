@@ -21,7 +21,7 @@ const swapPlayers = {
     user2: 'user1'
 };
 let ROOM_NAME;
-const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) => {
+const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats, setReadyToPlay, readyToPlay }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
     const [socket, setSocket] = useState(getSocket());
@@ -34,7 +34,6 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
     const [playWinSound] = useSound(BoardSoundWin);
     const [playCaptureSound] = useSound(BoardSoundCapture);
     const [playMultiCaptureSound] = useSound(BoardSoundMultiCapture);
-    const [readyToPlay, setReadyToPlay] = useState(false);
 
     useEffect(() => {
         setShouldBlockNavigation(true);
@@ -224,7 +223,11 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats 
             </div>)
     });
 
-    let JSX = <div>Wait another player</div>;
+    let JSX = (
+        <>
+            {/* <div className="waiting-msg">Waiting for another player</div> */}
+        </>
+    );
     if (readyToPlay) {
         JSX = (
             <>

@@ -2,8 +2,11 @@ import './CheckerBoard.css';
 import Grid from '../Grid/Grid'
 import GridMulti from '../GridMulti/GridMulti';
 
-const CheckerBoard = ({ type, onSetUserScores, resetState, setResetState, setPlayerStats }) => {
-
+const CheckerBoard = ({ type, onSetUserScores, resetState, setResetState, setPlayerStats, setReadyToPlay, readyToPlay  }) => {
+    if(type === 'locally') {
+        setReadyToPlay(true);
+    }
+    
     return (
         <section className="checker-board-section">
             {type === 'locally' ? <Grid
@@ -12,6 +15,8 @@ const CheckerBoard = ({ type, onSetUserScores, resetState, setResetState, setPla
                 resetState={resetState}
                 setResetState={setResetState}
             /> : <GridMulti
+                    setReadyToPlay={setReadyToPlay}
+                    readyToPlay={readyToPlay}
                     setPlayerStats={setPlayerStats}
                     onSetUserScores={onSetUserScores}
                     resetState={resetState}

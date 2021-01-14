@@ -8,6 +8,8 @@ const GameBox = ({ type }) => {
     const [userScores, setUserScores] = useState({});
     const [resetState, setResetState] = useState("");
     const [playerStats, setPlayerStats] = useState({});
+    const [readyToPlay, setReadyToPlay] = useState(false);
+
 
     return (
         <main className="main-container">
@@ -18,8 +20,10 @@ const GameBox = ({ type }) => {
                 setResetState={setResetState}
                 type={type}
                 onSetUserScores={setUserScores}
+                setReadyToPlay={setReadyToPlay}
+                readyToPlay={readyToPlay}
             />
-            <ScoreBoard userScores={userScores} playerStats={playerStats}/>
+            <ScoreBoard userScores={userScores} playerStats={playerStats} readyToPlay={readyToPlay} />
         </main>
     );
 };
