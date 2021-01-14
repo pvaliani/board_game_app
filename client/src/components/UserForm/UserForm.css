@@ -22,6 +22,6 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   border: 1px solid black;
-  
+
   transition: background-color 5000s ease-in-out 0s;
 }

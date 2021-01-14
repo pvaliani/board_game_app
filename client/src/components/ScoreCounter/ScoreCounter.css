@@ -13,3 +13,8 @@
     display: flex;
     justify-content: space-between;
 }
+
+.hr {
+    height: 1px;
+    background-color:  rgba(149, 186, 212);
+}

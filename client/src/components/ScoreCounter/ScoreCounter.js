@@ -7,7 +7,7 @@ const scoreCounter = ({ userScores }) => {
         scoresJSX = (
             <>
                 <div>Captures</div>
-                <hr />
+                <div className="hr"> </div>
                 <div className="score-name">
                     <div>{userScores['user1'].userName}:</div>
                     <div>{userScores['user1'].score}</div>

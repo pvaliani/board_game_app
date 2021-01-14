@@ -31,6 +31,7 @@ const UserForm = ({ playerTwoCb }) => {
         <div className="user-form">
             <div className="user-input">
                 <input
+                    maxLength={10}
                     className="input"
                     type="text"
                     name="user-input"

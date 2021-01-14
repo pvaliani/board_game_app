@@ -8,7 +8,7 @@ const playerStats = ({ playerStats }) => {
         playerStatsJSX = (
             <>
                 <div>Record (wins/losses)</div>
-                <hr />
+                <div className="hr"> </div>
                 <div className="score-name">
                     <div>{playerStats.user1.userName}:</div>
                     <div>{user1Score.toFixed(2)}</div>

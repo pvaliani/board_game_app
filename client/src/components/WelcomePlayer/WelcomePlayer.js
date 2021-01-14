@@ -3,6 +3,7 @@ import './WelcomePlayer.css';
 import Button from '../Button/Button';
 import { useState } from 'react';
 import UserForm from '../UserForm/UserForm';
+import logo from '../../static/img/CheckersHeader.png';
 
 const WelcomePlayer = () => {
     const [twoPlayers, setTwoPlayers] = useState(false);
@@ -28,8 +29,10 @@ const WelcomePlayer = () => {
         buttonsForOneJSX = null;
         buttonsForTwoJSX = (
             <div className="welcome-div-user2">
-                <p>Enter name of player two: </p>
-                <UserForm playerTwoCb={playerTwoCb} />
+                <div className="user-form-welcome">
+                    <UserForm playerTwoCb={playerTwoCb} />
+                </div>
+                <span className="OR">OR</span>
                 <Button title="Multiplayer (remotely)" onSubmit={() => history.push('/multi-remote', location.state)} />
             </div>
         );
@@ -54,19 +57,22 @@ const WelcomePlayer = () => {
 
     return (
         <div className="welcome-container">
-            <div className="welcome-div-user1">
-                <h1 className="welcome-user-name">{location.state.userName}</h1>
-                <div className="trophies">
-                    <div className="trophy-icon">🏆</div>
-                    <div className="trophy-icon">☠️</div>
-                    <div className="user-score-welcome">{location.state.wins}</div>
-                    <div className="user-score-welcome">{location.state.losses}</div>
+            <div className="welcome-div" style={{gridAutoFlow: readyToPlay ? 'column' : 'row'}}>
+                <div className="welcome-div-user1">
+                    <h1 className="welcome-user-name">{location.state.userName}</h1>
+                    <div className="trophies">
+                        <div className="trophy-icon">🏆</div>
+                        <div className="trophy-icon">☠️</div>
+                        <div className="user-score-welcome">{location.state.wins}</div>
+                        <div className="user-score-welcome">{location.state.losses}</div>
+                    </div>
+                    {buttonsForOneJSX}
                 </div>
-                {buttonsForOneJSX}
+                {VSJSX}
+                {secondPlayerJSX}
+                {buttonsForTwoJSX}
             </div>
-            {VSJSX}
-            {secondPlayerJSX}
-            {buttonsForTwoJSX}
+            <img src={logo} className="logo-welcome-page" />
         </div>
     );
 };
