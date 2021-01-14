@@ -13,14 +13,14 @@ const UserForm = ({ playerTwoCb }) => {
     };
 
     const onButtonPress = () => {
-            return verifyUser(user)
-                .then(backEndUser => {
-                    if (playerTwoCb) {
-                        return playerTwoCb(backEndUser);
-                    }
-                    history.push('/welcome', backEndUser);
-                })
-                .catch(console.error);
+        return verifyUser(user)
+            .then(backEndUser => {
+                if (playerTwoCb) {
+                    return playerTwoCb(backEndUser);
+                }
+                history.push('/welcome', backEndUser);
+            })
+            .catch(console.error);
     }
 
 
@@ -28,9 +28,10 @@ const UserForm = ({ playerTwoCb }) => {
         <div className="user-form">
             <div className="user-input">
                 <input
+                    className="input"
                     type="text"
                     name="user-input"
-                    placeholder="Player name"
+                    placeholder="Ready Player One?"
                     value={user}
                     onChange={nameHandler}
                     required

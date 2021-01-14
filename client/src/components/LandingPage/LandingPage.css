@@ -2,48 +2,69 @@
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 1fr minmax(400px, 1fr) 1fr;
-    grid-template-areas: ". table .";
+    grid-template-columns: 1fr minmax(500px, 1fr) 1fr;
+    grid-template-areas: 
+    ". logo ."
+    ". user-form ."
+    ". leaderboard .";
     background-color: #b2edfcff;
 
 }
 
 .scores-table-container {
-    grid-area: table;
-    background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5));
+    grid-area: leaderboard;
     justify-self: center;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     padding: 0 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    background-color: #b2edfcff;
 }
 
+.logo-landing {
+    grid-area: logo;
+    width: 300px;
+    justify-self: center;
+    padding-top: 40px;
+}
+
+
 .scores-table {
-    margin-top: 30px;
-    height: 90%;
-    overflow-y: hidden;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, .5);
+    height: 250px;
+    overflow-y: scroll;
+    /* box-shadow: 0 5px 10px rgba(0, 0, 0, .5); */
+    background-color: #b2edfcff;
+}
+
+.user-name {
+    justify-self: start;
 }
 
 .user-row {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 100px 80px 80px 180px;
 }
 
 .user-row0 {
-    background-color: cadetblue;
+    background-color: #b2edfcff;
+    color: black;
 }
 
 .user-row1 {
-    background-color: cornsilk;
+    background-color: #b2edfcff;
+    color: black;
+    background-image: linear-gradient(rgba(149, 186, 212, 0.5),rgba(149, 186, 212, 0.5));
 }
 
 .player1-form {
-    align-self: center;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    background-image: linear-gradient(rgba(0,0,0, .5), rgba(0,0,0, .5));
-    padding: 10px 5px;
-    box-shadow: 10px 5px 10px rgba(0, 0, 0, .5);
+    grid-area: user-form;
+    align-self: start;
+    justify-self: center;
+    /* box-shadow: 10px 5px 10px rgba(0, 0, 0, .5); */
 }
+
+
