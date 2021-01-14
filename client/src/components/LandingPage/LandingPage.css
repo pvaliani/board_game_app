@@ -2,7 +2,7 @@
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: 1fr minmax(500px, 1fr) 1fr;
+    grid-template-columns: 1fr minmax(540px, 1fr) 1fr;
     grid-template-areas: 
     ". logo ."
     ". user-form ."
@@ -22,6 +22,7 @@
     padding-bottom: 50px;
     text-align: center;
     background-color: #b2edfcff;
+    overflow: hidden;
 }
 
 .logo-landing {
@@ -34,9 +35,13 @@
 
 .scores-table {
     height: 250px;
+    width: 100%;
     overflow-y: scroll;
     /* box-shadow: 0 5px 10px rgba(0, 0, 0, .5); */
     background-color: #b2edfcff;
+    box-sizing: content-box; /* So the width will be 100% + 17px */
+    padding-right: 117px; /* Increase/decrease this value for cross-browser compatibility */
+
 }
 
 .user-name {

@@ -13,6 +13,9 @@ const UserForm = ({ playerTwoCb }) => {
     };
 
     const onButtonPress = () => {
+        if (!user.trim()) {
+            return
+        }
         return verifyUser(user)
             .then(backEndUser => {
                 if (playerTwoCb) {
