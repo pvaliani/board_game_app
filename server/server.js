@@ -5,10 +5,10 @@ const MongoClient = require('mongodb').MongoClient;
 const createRouter = require('./helpers/create_router');
 const app = express();
 
-
 app.use(cors());
 app.use(bodyParser.json());
-MongoClient.connect('mongodb://localhost:27017', { useUnifiedTopology: true })
+const mongouriDEV = 'mongodb://localhost:27017';
+MongoClient.connect(mongouriDEV, { useUnifiedTopology: true })
     .then(client => {
         const db = client.db('board_game');
         const usersCollection = db.collection('users');
