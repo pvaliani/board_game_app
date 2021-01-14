@@ -34,6 +34,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
     const [playWinSound] = useSound(BoardSoundWin);
     const [playCaptureSound] = useSound(BoardSoundCapture);
     const [playMultiCaptureSound] = useSound(BoardSoundMultiCapture);
+    const [currentPlayerSymbol, setCurrentPlayerSymbol] = useState('user1')
 
     useEffect(() => {
         setShouldBlockNavigation(true);
@@ -72,6 +73,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
         });
 
         socket.on('opponent-moved', ({ room, currentPlayer }) => {
+            setCurrentPlayerSymbol(swapPlayers[currentPlayerSymbol]);
             gridInstance.createState(room.grid);
             gridInstance.calculateScore();
             playMoveSound();
@@ -80,6 +82,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
             const usersObj = { user1: room.users[0], user2: room.users[1] };
             if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
                 playWinSound();
+                setCurrentPlayerSymbol('user1');
                 setPlayerStats({ ...usersObj });
                 return setWinner(usersObj[swapPlayers[currentPlayer]]);
             }
@@ -125,6 +128,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
             increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
             increaseWinOrLosses(usersObj[swapPlayers[currentPlayer]].userName, 'losses', usersObj[swapPlayers[currentPlayer]].losses);
             playWinSound();
+            setCurrentPlayerSymbol('user1');
             setPlayerStats({ ...usersObj });
             socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
             return setWinner(usersObj[currentPlayer]);
@@ -133,11 +137,13 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
             setSelectedPiece(moveObj.targetSquare.piece);
             playMultiCaptureSound();  // Play the board sound after a move is performed
         } else if (moveObj.moveType === 'basic') {
+            setCurrentPlayerSymbol(swapPlayers[currentPlayerSymbol]);
             socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
             setSelectedPiece('');
             setCurrentPlayer('');
             playMoveSound();  // Play the board sound after a move is performed
         } else { // single capture
+            setCurrentPlayerSymbol(swapPlayers[currentPlayerSymbol]);
             socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
             setSelectedPiece('');
             setCurrentPlayer('');
@@ -232,7 +238,12 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
         JSX = (
             <>
                 <div className="grid" style={gridStyle}>
-                    {room && <p className="user1-name">{room.users[0].userName}</p>}
+                    {room && 
+                        <div className="user1-name">
+                            <p >{room.users[0].userName}</p>
+                            <span className="turn-icon-user1" style={{ color: currentPlayerSymbol !== 'user1' && '#b2edfcff' }}>˿</span>
+                        </div>
+                    }
                     {gridJSX}
                     {!!Object.keys(winner).length && <div className="winner-announcement">
                         🥳 Winner is {winner.userName} 🥳
@@ -240,7 +251,12 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
                             Play again!
                     </div>
                     </div>}
-                    {(room && room.users.length === 2) && <p className="user2-name">{room.users[1].userName}</p>}
+                    {(room && room.users.length === 2) &&
+                        <div className="user2-name">
+                            <p >{room.users[1].userName}</p>
+                            <span className="turn-icon-user2" style={{ color: currentPlayerSymbol !== 'user2' && '#b2edfcff' }}>˿</span>
+                        </div>
+                    }
                 </div>
                 <Prompt
                     when={shouldBlockNavigation}

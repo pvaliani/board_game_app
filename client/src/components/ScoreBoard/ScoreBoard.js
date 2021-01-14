@@ -8,7 +8,7 @@ const ScoreBoard = ({ userScores, playerStats, readyToPlay }) => {
     let mainJSX = (
         <section className="score-board-section">
             <Title />
-            <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+            <div className="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         </section>
     );
     if (readyToPlay) {
