@@ -72,8 +72,8 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
             setReadyToPlay(true);
         });
 
-        socket.on('opponent-moved', ({ room, currentPlayer }) => {
-            setCurrentPlayerSymbol(swapPlayers[currentPlayerSymbol]);
+        socket.on('opponent-moved', ({ room, currentPlayer, currentPlayerSymbolIncoming }) => {
+            setCurrentPlayerSymbol(currentPlayerSymbolIncoming);
             gridInstance.createState(room.grid);
             gridInstance.calculateScore();
             playMoveSound();
@@ -130,21 +130,21 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
             playWinSound();
             setCurrentPlayerSymbol('user1');
             setPlayerStats({ ...usersObj });
-            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
+            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room, currentPlayerSymbolIncoming: swapPlayers[currentPlayerSymbol] });
             return setWinner(usersObj[currentPlayer]);
         }
         if (moveObj.moveType === 'capturing-double') {
             setSelectedPiece(moveObj.targetSquare.piece);
             playMultiCaptureSound();  // Play the board sound after a move is performed
         } else if (moveObj.moveType === 'basic') {
+            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room, currentPlayerSymbolIncoming: swapPlayers[currentPlayerSymbol] });
             setCurrentPlayerSymbol(swapPlayers[currentPlayerSymbol]);
-            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
             setSelectedPiece('');
             setCurrentPlayer('');
             playMoveSound();  // Play the board sound after a move is performed
         } else { // single capture
+            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room, currentPlayerSymbolIncoming: swapPlayers[currentPlayerSymbol] });
             setCurrentPlayerSymbol(swapPlayers[currentPlayerSymbol]);
-            socket.emit('i-moved', { currentPlayer: swapPlayers[currentPlayer], room: room });
             setSelectedPiece('');
             setCurrentPlayer('');
             playCaptureSound();  // Play the board sound after a move is performed

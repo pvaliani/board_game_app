@@ -11,8 +11,9 @@ const LandingPage = () => {
         const len = users.length;
         for (let i = len - 1; i >= 0; i--) {
             for (let j = 1; j <= i; j++) {
-                const userScorex = users[j - 1].wins / users[j - 1].losses || 0;
-                const userScorej = users[j].wins / users[j].losses || 0;
+                
+                const userScorex = users[j - 1].wins / users[j - 1].losses === Infinity ? users[j - 1].wins : users[j - 1].wins / users[j - 1].losses || 0;
+                const userScorej = users[j].wins / users[j].losses === Infinity ? users[j].wins : users[j].wins / users[j].losses || 0;
                 if (userScorex < userScorej) {
                     const temp = users[j - 1];
                     users[j - 1] = users[j];

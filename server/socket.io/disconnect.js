@@ -6,6 +6,7 @@ const disconnecting = (socket, io, roomName) => {
     }
     rooms.removeLeaverFromRoom(socket.id, roomName);
     rooms.cleanUp();
+    socket.leave(roomName);
     io.emit('rooms-list', rooms.getAvailableRooms());
     socket.to(roomName).emit('opponent-left');
 }
