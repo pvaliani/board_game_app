@@ -7,14 +7,14 @@ const clean_up = require('./clean_up');
 const i_won = require('./i_won');
 const sendInitialGrid = require('./send_initial_grid');
 
-module.exports = (io, collection) => {
+module.exports = (io) => {
 
     io.on('connection', (socket) => {
         
     looking_for_rooms(socket);    
     createRoom(socket);
     sendInitialGrid(socket);
-    joinRoom(socket, io, collection);
+    joinRoom(socket, io);
     moved(socket);
     clean_up(socket, io);
     i_won(socket);

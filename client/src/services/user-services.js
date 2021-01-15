@@ -1,4 +1,4 @@
-const baseURL = 'http://localhost:5000/api/users/';
+const baseURL = 'http://not-checkers.herokuapp.com/api/users/';
 
 export const verifyUser = (userName) => {
     /* 

@@ -2,7 +2,7 @@ import openSocket from 'socket.io-client';
 
 let socket;
 export const initSocket = () => {
-    socket = openSocket('http://localhost:5000');
+    socket = openSocket('https://not-checkers.herokuapp.com/');
     return socket;
 };
 export const getSocket = () => {
