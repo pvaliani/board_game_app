@@ -1,11 +1,13 @@
 const express = require('express');
 const User = require('../models/user/user');
+const getDb = require('../database').getDb;
 
-const createRouter = collection => {
+const createRouter = () => {
     const router = express.Router();
 
     // get everything
     router.get('/', (req, res) => {
+        const collection = getDb().collection('users');
         collection.find().toArray()
             .then(result => {
                 res.json(result);
@@ -16,6 +18,7 @@ const createRouter = collection => {
 
     // create user router
     router.post('/verify-user', (req, res) => {
+        const collection = getDb().collection('users');
         const playerObj = req.body; // {name: Pedram}
         // checking if player exists
         collection.findOne(playerObj)
@@ -42,6 +45,7 @@ const createRouter = collection => {
 
     // UPDATE: for incrementing user score
     router.patch('/:name', (req, res) => {
+        const collection = getDb().collection('users');
         const userName = req.params.name;
         const updatedUserObj = req.body;
         collection.updateOne({ userName: userName }, { $set: updatedUserObj })
