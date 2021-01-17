@@ -11,9 +11,11 @@ const LandingPage = () => {
         const len = users.length;
         for (let i = len - 1; i >= 0; i--) {
             for (let j = 1; j <= i; j++) {
-                
-                const userScorex = users[j - 1].wins / users[j - 1].losses === Infinity ? users[j - 1].wins : users[j - 1].wins / users[j - 1].losses || 0;
-                const userScorej = users[j].wins / users[j].losses === Infinity ? users[j].wins : users[j].wins / users[j].losses || 0;
+                // const userScorex = users[j - 1].wins / users[j - 1].losses === Infinity ? users[j - 1].wins : users[j - 1].wins / users[j - 1].losses || 0;
+                // const userScorej = users[j].wins / users[j].losses === Infinity ? users[j].wins : users[j].wins / users[j].losses || 0;
+                const userScorex = (users[j - 1].wins - users[j - 1].losses) + (users[j - 1].wins + users[j - 1].losses) * 0.5;
+                const userScorej = (users[j].wins - users[j].losses) + (users[j].wins + users[j].losses) * 0.5;
+
                 if (userScorex < userScorej) {
                     const temp = users[j - 1];
                     users[j - 1] = users[j];
@@ -33,7 +35,9 @@ const LandingPage = () => {
     }, [])
 
     const usersJSX = allUsers.map((user, i) => {
-        const userScore = user.wins / user.losses === Infinity ? user.wins : user.wins / user.losses || 0;
+        // const userScore = user.wins / user.losses === Infinity ? user.wins : user.wins / user.losses || 0;
+        const userScore = (user.wins - user.losses) + (user.wins + user.losses) * 0.5;
+
         return (
             <div key={user.userName} className={`user-row user-row${i % 2}`}>
                 <div className="user-name">{i + 1}. {user.userName}</div>
