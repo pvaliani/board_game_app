@@ -13,6 +13,7 @@ import BoardSoundWin from '../../sounds/GameWin.mp3';
 import BoardSoundCapture from '../../sounds/CaptureOpponent.mp3';
 import BoardSoundMultiCapture from '../../sounds/GunSingleCapture.mp3';
 import { increaseWinOrLosses } from '../../services/user-services';
+import Chat from '../Chat/Chat';
 
 // decide functionality for user2 (should it be same component or different one?)
 let gridInstance;
@@ -24,7 +25,7 @@ let ROOM_NAME;
 const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats, setReadyToPlay, readyToPlay }) => {
     const [currentPlayer, setCurrentPlayer] = useState('');
     const [selectedPiece, setSelectedPiece] = useState({});
-    const [socket, setSocket] = useState(getSocket());
+    const socket = useState(getSocket())[0];
     const [shouldBlockNavigation, setShouldBlockNavigation] = useState(true);
     const [winner, setWinner] = useState({});
     const [room, setRoom] = useState(null);
@@ -35,6 +36,8 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
     const [playCaptureSound] = useSound(BoardSoundCapture);
     const [playMultiCaptureSound] = useSound(BoardSoundMultiCapture);
     const [currentPlayerSymbol, setCurrentPlayerSymbol] = useState('user1')
+    const [thisUser, setThisUser] = useState({});
+    const [opponentName, setOpponentName] = useState('');
 
     useEffect(() => {
         setShouldBlockNavigation(true);
@@ -47,13 +50,14 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
         if (incomingData.user === 'user1') {
             // setPlayerStats({ user1: incomingData.userObj, user2: '' });
             gridInstance.initialiseState();
-            setCurrentPlayer('user1'); // triggers another cycle
             socket.emit('send-initial-grid', { grid: gridInstance.gridState, roomName: incomingData.room.name }, room => {
                 ROOM_NAME = room.name;
                 setRoom(room);
             });
         } else if (incomingData.user === 'user2') {
             setReadyToPlay(true);
+            setThisUser({ user: 'user2', userName: incomingData.room.users[1].userName }); // triggers another cycle
+            setOpponentName(incomingData.room.users[0].userName);
             gridInstance.createState(incomingData.room.grid);
             setCurrentPlayer(''); // triggers another cycle
             ROOM_NAME = incomingData.room.name;
@@ -66,6 +70,9 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
 
         socket.on('someone-joined', room => {
             setRoom(room);
+            setThisUser({ user: 'user1', userName: room.users[0].userName }); // triggers another cycle
+            setOpponentName(room.users[1].userName);
+            setCurrentPlayer('user1');
             setPlayerStats({ user1: room.users[0], user2: room.users[1] });
             gridInstance.addUserNames(room.users[1].userName, room.users[0].userName);
             onSetUserScores({ ...gridInstance.captures });
@@ -80,7 +87,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
             onSetUserScores({ ...gridInstance.captures });
             setCurrentPlayer(currentPlayer);
             const usersObj = { user1: room.users[0], user2: room.users[1] };
-            if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
+            if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
                 playWinSound();
                 setCurrentPlayerSymbol('user1');
                 setPlayerStats({ ...usersObj });
@@ -116,13 +123,12 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
     }, []);
 
     const selectMoveHandler = targetSquare => {
-        playPieceSound();
         const usersObj = { user1: room.users[0], user2: room.users[1] };
         const moveObj = gridInstance.movePiece(targetSquare, selectedPiece);
         onSetUserScores({ ...gridInstance.captures });
         room.grid = gridInstance.gridState;
         gridInstance.calculateScore();
-        if (gridInstance.captures.user1.score === 1 || gridInstance.captures.user2.score === 1) {
+        if (gridInstance.captures.user1.score === 12 || gridInstance.captures.user2.score === 12) {
             usersObj[currentPlayer].wins += 1;
             usersObj[swapPlayers[currentPlayer]].losses += 1;
             increaseWinOrLosses(usersObj[currentPlayer].userName, 'wins', usersObj[currentPlayer].wins);
@@ -154,6 +160,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
 
 
     const selectPieceHandler = piece => {
+        playPieceSound();
         /* 
             This function is being called each time a player
             clicks on one of their pieces. If the clicked piece
@@ -238,7 +245,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
         JSX = (
             <>
                 <div className="grid" style={gridStyle}>
-                    {room && 
+                    {room &&
                         <div className="user1-name">
                             <p >{room.users[0].userName}</p>
                             <span className="turn-icon-user1" style={{ color: currentPlayerSymbol !== 'user1' && '#b2edfcff' }}>˿</span>
@@ -258,6 +265,7 @@ const GridMulti = ({ onSetUserScores, resetState, setResetState, setPlayerStats,
                         </div>
                     }
                 </div>
+                <Chat roomName={ROOM_NAME} currentUser={thisUser} opponentName={opponentName}/>
                 <Prompt
                     when={shouldBlockNavigation}
                     message='If you leave the game will be cancelled, you sure you wanna leave?'

@@ -21,12 +21,4 @@ mongoConnect(() => {
 
     });
 });
-// MongoClient.connect(mongouriDEV, { useUnifiedTopology: true })
-//     .then(client => {
-//         const db = client.db('board_game');
-//         const usersCollection = db.collection('users');
-
-//     })
-//     .catch(console.error);
-
 

@@ -1,7 +1,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 let _db;
-const uri = "mongodb+srv://ntheodoropoulos:nikblod1!@users.v8tlj.mongodb.net/bang-checkers?retryWrites=true&w=majority";
+const uri = `mongodb+srv://ntheodoropoulos:nikblod1!@users.v8tlj.mongodb.net/bang-checkers?retryWrites=true&w=majority`;
 const mongoConnect = cb => {
     MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
         .then(client => {

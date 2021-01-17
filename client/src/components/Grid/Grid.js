@@ -154,23 +154,25 @@ const Grid = ({ onSetUserScores, resetState, setResetState, setPlayerStats }) =>
     });
 
     return (
-        <div className="grid" style={gridStyle}>
-            <div className="user1-name">
-                <p >{usersObj['user1'].userName}</p>
-                <span className="turn-icon-user1" style={{color: currentPlayer !== 'user1' && '#b2edfcff'}}>˿</span>
-            </div>
-            {gridJSX}
-            {!!Object.keys(winner).length && <div className="winner-announcement">
-                🥳 {winner.userName} Wins! 🥳
-                <div className="play-again-btn" onClick={playAgainHandler}>
-                    Play again!
+        <>
+            <div className="grid" style={gridStyle}>
+                <div className="user1-name">
+                    <p >{usersObj['user1'].userName}</p>
+                    <span className="turn-icon-user1" style={{ color: currentPlayer !== 'user1' && '#b2edfcff' }}>˿</span>
                 </div>
-            </div>}
-            <div className="user2-name">
-                <p >{usersObj['user2'].userName}</p>
-                <span className="turn-icon-user2" style={{color: currentPlayer !== 'user2' && '#b2edfcff'}}>˿</span>
+                {gridJSX}
+                {!!Object.keys(winner).length && <div className="winner-announcement">
+                    🥳 {winner.userName} Wins! 🥳
+                <div className="play-again-btn" onClick={playAgainHandler}>
+                        Play again!
+                </div>
+                </div>}
+                <div className="user2-name">
+                    <p >{usersObj['user2'].userName}</p>
+                    <span className="turn-icon-user2" style={{ color: currentPlayer !== 'user2' && '#b2edfcff' }}>˿</span>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
